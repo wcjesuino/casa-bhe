@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Casa Bhe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout: palco 16:9 (1600x900) escalado para caber na tela; um slide por vez, fotos em sangria, muito branco. */
+:root{
+  --ink:#0b0b0b;        /* preto da logo */
+  --paper:#ffffff;
+  --stone:#ecebe8;      /* porcelanato claro da casa */
+  --mute:#77736d;       /* texto secundário, neutro levemente quente */
+  --wood:#9a6d4b;       /* painel de madeira, usado com parcimônia */
+  --line:rgba(11,11,11,.14);
+  --serif:"Bodoni Moda","Bodoni MT","Didot",Georgia,serif;
+  --sans:"Jost","Futura","Century Gothic","Helvetica Neue",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%;margin:0}
+body{background:#050505;color:var(--ink);font-family:var(--sans);overflow:hidden}
+#viewport{position:fixed;inset:0;display:grid;place-items:center;overflow:hidden}
+#stage{width:1600px;height:900px;position:relative;transform-origin:center center;background:var(--paper);overflow:hidden;flex:none}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s linear .9s;overflow:hidden;background:var(--paper)}
+.slide.on{opacity:1;visibility:visible;transition:opacity .9s ease,visibility 0s}
+.dark{background:var(--ink);color:var(--paper)}
+.stone{background:var(--stone)}
+
+/* tipografia */
+.eyebrow{font:400 15px/1 var(--sans);letter-spacing:.32em;text-transform:uppercase;color:var(--mute)}
+.dark .eyebrow{color:rgba(255,255,255,.62)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:76px;line-height:1.04}
+h2{font-size:60px;line-height:1.06}
+h3{font-size:32px;line-height:1.15}
+p{margin:0;font-weight:300;font-size:22px;line-height:1.55}
+.small{font-size:15px;line-height:1.5;color:var(--mute);font-weight:400}
+.dark .small{color:rgba(255,255,255,.55)}
+em{font-style:italic}
+.num{font-family:var(--serif);font-variant-numeric:lining-nums tabular-nums}
+
+/* mídia */
+.ph{position:absolute;overflow:hidden;background:#222}
+.ph img,.ph video{width:100%;height:100%;object-fit:cover;display:block}
+.slide.on .kb img,.slide.on .kb video{animation:kb 14s ease-out both}
+@keyframes kb{from{transform:scale(1.12)}to{transform:scale(1.0)}}
+.bg{position:absolute;inset:0;overflow:hidden}
+.bg img,.bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* vídeos já recortados sem marcas de terceiros; leve ampliação para o movimento */
+.bg video.stretch{transform:scale(1.06)}
+.bg video.soft{transform:scale(1.06)}
+.bg video.blurbg{transform:scale(1.1);filter:blur(14px) saturate(.6)}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55))}
+.shade.heavy{background:rgba(0,0,0,.62)}
+
+/* entrada animada: cada .a entra quando o slide fica ativo */
+.slide.on .a{animation:rise 1.1s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.slide.on .fade{animation:fade 1.6s ease both;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.slide.on .grow{animation:grow 1.4s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d,0) * 1s);transform-origin:left center}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.slide.on .ring{animation:ring 1.4s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes ring{from{opacity:0;transform:translate(-50%,-50%) scale(.6)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+.pad{position:absolute;inset:88px 104px}
+.mark{position:absolute;right:56px;bottom:40px;width:64px;opacity:.9}
+.pg{position:absolute;left:104px;bottom:40px;font:400 13px/1 var(--sans);letter-spacing:.24em;color:var(--mute)}
+.dark .pg{color:rgba(255,255,255,.45)}
+
+/* controles */
+#ui{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:5;opacity:.0;transition:opacity .4s}
+body:hover #ui,#ui:focus-within{opacity:1}
+#ui button{all:unset;cursor:pointer;font:400 13px/1 var(--sans);letter-spacing:.14em;color:#fff;background:rgba(255,255,255,.12);padding:10px 14px;border-radius:999px;backdrop-filter:blur(8px)}
+#ui button:focus-visible{outline:2px solid #fff}
+#bar{position:fixed;left:0;bottom:0;height:2px;background:rgba(255,255,255,.7);transition:width .6s ease;z-index:5}
+@media (hover:none){#ui{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  .slide,.slide.on{transition:none}
+  .slide.on .a,.slide.on .fade,.slide.on .grow,.slide.on .ring,.slide.on .kb img,.slide.on .kb video{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div id="viewport"><div id="stage">
+
+<!-- 1 · CAPA -->
+<section class="slide dark on" data-title="Capa">
+  <div class="bg kb"><video class="stretch" poster="img/poster-eventos.jpg" muted loop playsinline autoplay preload="metadata"><source src="videos/eventos.mp4" type="video/mp4"><source src="videos/eventos.webm" type="video/webm"></video></div>
+  <div class="shade"></div>
+  <img src="img/logo-branca.png" alt="Bhe. Beauty House Experience" class="a" style="--d:.3;position:absolute;left:50%;top:44%;width:400px;margin-left:-200px;transform-origin:center">
+  <div class="a" style="--d:1.1;position:absolute;left:104px;bottom:72px">
+    <div class="eyebrow" style="color:rgba(255,255,255,.75)">Apresentação para investidores · Rio de Janeiro · 2026</div>
+  </div>
+  <p class="a" style="--d:1.3;position:absolute;right:104px;bottom:64px;font-family:var(--serif);font-style:italic;font-size:26px;color:#fff;text-align:right">Conteúdo, comércio e experiência<br>em beleza, sob o mesmo teto.</p>
+</section>
+
+<!-- 2 · A IDEIA -->
+<section class="slide" data-title="A ideia">
+  <div class="ph" style="right:0;top:0;width:640px;height:900px"><video poster="img/poster-cabelo.jpg" muted loop playsinline preload="metadata"><source src="videos/cabelo.mp4" type="video/mp4"><source src="videos/cabelo.webm" type="video/webm"></video></div>
+  <div style="position:absolute;left:104px;top:150px;width:760px">
+    <div class="eyebrow a" style="--d:.1">A ideia</div>
+    <h1 class="a" style="--d:.25;margin-top:34px">Uma casa que vira <em>cenário</em>, conteúdo, venda e experiência.</h1>
+    <p class="a" style="--d:.55;margin-top:40px;max-width:620px;color:#3b3935">A Beauty House Experience é um hub físico de live commerce, conteúdo, eventos e relacionamento com marcas. Cada ambiente tem uma função, e a programação é distribuída em vários canais ao mesmo tempo.</p>
+  </div>
+  <div class="pg">02</div>
+</section>
+
+<!-- 3 · O MOMENTO -->
+<section class="slide dark" data-title="O momento">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">O momento</div>
+    <h2 class="a" style="--d:.25;margin-top:30px;max-width:1100px">O comércio ao vivo explodiu no Brasil, e beleza lidera o D2C.</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:64px;margin-top:96px">
+      <div class="a" style="--d:.5;border-top:1px solid rgba(255,255,255,.25);padding-top:30px">
+        <div class="num" style="font-size:88px;line-height:1;white-space:nowrap"><span data-count="161">161</span>x</div>
+        <p style="margin-top:22px;font-size:19px;color:rgba(255,255,255,.75)">crescimento do GMV médio diário de lives no TikTok Shop, entre maio de 2025 e maio de 2026</p>
+      </div>
+      <div class="a" style="--d:.7;border-top:1px solid rgba(255,255,255,.25);padding-top:30px">
+        <div class="num" style="font-size:88px;line-height:1;white-space:nowrap">R$ <span data-count="791">791</span> mi</div>
+        <p style="margin-top:22px;font-size:19px;color:rgba(255,255,255,.75)">em saúde e beleza D2C em 2025, alta de 44%, uma das categorias mais dinâmicas</p>
+      </div>
+      <div class="a" style="--d:.9;border-top:1px solid rgba(255,255,255,.25);padding-top:30px">
+        <div class="num" style="font-size:88px;line-height:1;white-space:nowrap">R$ 6,5 bi</div>
+        <p style="margin-top:22px;font-size:19px;color:rgba(255,255,255,.75)">movimentados pelo D2C brasileiro em 2025, alta de 35%</p>
+      </div>
+    </div>
+  </div>
+  <div class="small fade" style="--d:1.3;position:absolute;left:104px;bottom:40px;right:200px">Fontes: TikTok Newsroom; Nuvemshop Radar D2C e NuvemCommerce 2026. Os dados dimensionam a oportunidade e não são projeção de faturamento.</div>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- 4 · A CASA -->
+<section class="slide" data-title="A casa">
+  <div class="ph kb fade" style="--d:0;left:0;top:0;width:760px;height:900px"><img src="img/01-fachada-piscina.jpg" alt="Fachada da casa com piscina"></div>
+  <div class="ph kb fade" style="--d:.3;left:784px;top:0;width:400px;height:438px"><img src="img/03-sala-teto-preto-varanda.jpg" alt="Sala com teto preto"></div>
+  <div class="ph kb fade" style="--d:.5;left:1208px;top:0;width:392px;height:438px"><img src="img/06-salao-vazio-varanda.jpg" alt="Salão amplo com varanda"></div>
+  <div class="ph kb fade" style="--d:.7;left:784px;top:462px;width:400px;height:438px"><img src="img/02-vista-superior-piscina.jpg" alt="Vista da piscina"></div>
+  <div style="position:absolute;left:1236px;top:500px;width:300px">
+    <div class="eyebrow a" style="--d:.8">Rio de Janeiro</div>
+    <h2 class="a" style="--d:.95;margin-top:22px;font-size:64px">A casa</h2>
+    <p class="a" style="--d:1.15;margin-top:22px;font-size:18px;color:#3b3935">Ambientes amplos, luz natural, piscina e áreas integradas. Um estúdio pronto para gravar, vender e receber.</p>
+  </div>
+</section>
+
+<!-- 5 · TRÊS MOTORES -->
+<section class="slide" data-title="Receita">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Modelo de negócio</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Três motores de receita</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:56px">
+      <div class="a" style="--d:.45"><div class="ph kb" style="position:relative;height:300px"><img src="img/03-sala-teto-preto-varanda.jpg" alt=""></div><h3 style="margin-top:28px">Live commerce</h3><p style="margin-top:12px;font-size:19px;color:#3b3935">Venda direta de produtos durante lives e vídeos compráveis.</p></div>
+      <div class="a" style="--d:.65"><div class="ph kb" style="position:relative;height:300px"><img src="img/05-sala-painel-madeira-estante.jpg" alt=""></div><h3 style="margin-top:28px">Patrocínio e mídia</h3><p style="margin-top:12px;font-size:19px;color:#3b3935">Marcas pagam por presença, conteúdo, lançamentos e integração de produto.</p></div>
+      <div class="a" style="--d:.85"><div class="ph" style="position:relative;height:300px"><video poster="img/poster-corte.jpg" muted loop playsinline preload="metadata"><source src="videos/corte.mp4" type="video/mp4"><source src="videos/corte.webm" type="video/webm"></video></div><h3 style="margin-top:28px">Eventos presenciais</h3><p style="margin-top:12px;font-size:19px;color:#3b3935">Workshops, masterclasses, lançamentos e experiências patrocinadas.</p></div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section>
+
+<!-- 6 · OPERAÇÃO -->
+<section class="slide stone" data-title="Operação">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Modelo operacional</div>
+    <h2 class="a" style="--d:.25;margin-top:26px;max-width:1100px">Uma casa, várias transmissões ao mesmo tempo</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px;margin-top:52px">
+      <div class="a" style="--d:.45"><div class="ph" style="position:relative;height:250px"><img src="img/03-sala-teto-preto-varanda.jpg" alt=""></div><div class="eyebrow" style="margin-top:22px">Sala 1 · Vendas</div><h3 style="margin-top:12px;font-size:28px">Live de conversão</h3><p style="margin-top:8px;font-size:17px;color:#4a4742">Oferta e demonstração</p></div>
+      <div class="a" style="--d:.6"><div class="ph" style="position:relative;height:250px"><img src="img/04-lounge-sofa-painel-madeira.jpg" alt=""></div><div class="eyebrow" style="margin-top:22px">Sala 2 · Retenção</div><h3 style="margin-top:12px;font-size:28px">Storytelling</h3><p style="margin-top:8px;font-size:17px;color:#4a4742">Rotina, transformação, desafio</p></div>
+      <div class="a" style="--d:.75"><div class="ph" style="position:relative;height:250px"><img src="img/12-quarto-solteiro.jpg" alt=""></div><div class="eyebrow" style="margin-top:22px">Sala 3 · Testes</div><h3 style="margin-top:12px;font-size:28px">Micro-live</h3><p style="margin-top:8px;font-size:17px;color:#4a4742">20 a 40 min por produto ou problema</p></div>
+      <div class="a" style="--d:.9"><div class="ph" style="position:relative;height:250px"><img src="img/07-integrado-cozinha-tv.jpg" alt=""></div><div class="eyebrow" style="margin-top:22px">Área comum · Aquisição</div><h3 style="margin-top:12px;font-size:28px">Conteúdo vertical</h3><p style="margin-top:8px;font-size:17px;color:#4a4742">Bastidores, cortes, entrevistas</p></div>
+    </div>
+  </div>
+  <p class="small fade" style="--d:1.3;position:absolute;left:104px;bottom:40px;max-width:1100px">A mesma infraestrutura gera várias peças de conteúdo. Uma nova sala só abre depois de medido o seu custo incremental.</p>
+</section>
+
+<!-- 7 · AUDIÊNCIA -->
+<section class="slide" data-title="Audiência">
+  <div style="position:absolute;left:400px;top:450px;width:0;height:0">
+    <div class="ring" style="--d:.2;position:absolute;left:0;top:0;width:700px;height:700px;border-radius:50%;border:1px solid var(--line);transform:translate(-50%,-50%)"></div>
+    <div class="ring" style="--d:.4;position:absolute;left:0;top:0;width:470px;height:470px;border-radius:50%;border:1px solid rgba(11,11,11,.3);transform:translate(-50%,-50%)"></div>
+    <div class="ring" style="--d:.6;position:absolute;left:0;top:0;width:250px;height:250px;border-radius:50%;background:var(--ink);transform:translate(-50%,-50%)"></div>
+    <div class="fade" style="--d:1;position:absolute;left:-120px;top:-20px;width:240px;text-align:center;color:#fff;font-family:var(--serif);font-size:28px">Fundadores</div>
+    <div class="fade eyebrow" style="--d:1.1;position:absolute;left:-150px;top:-200px;width:300px;text-align:center;font-size:13px">Microinfluenciadores</div>
+    <div class="fade eyebrow" style="--d:1.2;position:absolute;left:-150px;top:-318px;width:300px;text-align:center;font-size:13px">Grandes influenciadores</div>
+  </div>
+  <div style="position:absolute;left:860px;top:150px;width:640px">
+    <div class="eyebrow a" style="--d:.1">Audiência</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Audiência própria como ativo</h2>
+    <div style="margin-top:44px;display:grid;gap:28px">
+      <div class="a" style="--d:.5"><h3 style="font-size:28px">Fundadores</h3><p style="font-size:18px;color:#3b3935;margin-top:6px">Apresentadores da casa: autoridade, recorrência e relacionamento.</p></div>
+      <div class="a" style="--d:.65"><h3 style="font-size:28px">Microinfluenciadores</h3><p style="font-size:18px;color:#3b3935;margin-top:6px">Frequência, nichos e teste de formatos.</p></div>
+      <div class="a" style="--d:.8"><h3 style="font-size:28px">Grandes influenciadores</h3><p style="font-size:18px;color:#3b3935;margin-top:6px">Picos de alcance em lançamentos e campanhas.</p></div>
+    </div>
+    <p class="a" style="--d:1;margin-top:40px;font-family:var(--serif);font-style:italic;font-size:24px">Converter a audiência trazida por terceiros em audiência da Bhe.</p>
+  </div>
+</section>
+
+<!-- 8 · CANAIS -->
+<section class="slide dark" data-title="Canais">
+  <div class="bg kb"><img src="img/09-terreo-escada.jpg" alt=""></div>
+  <div class="shade heavy"></div>
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Distribuição</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Um conteúdo, muitos canais</h2>
+    <div style="margin-top:64px;font-family:var(--serif);font-size:60px;line-height:1.3">
+      <div class="a" style="--d:.45">TikTok Shop</div>
+      <div class="a" style="--d:.55">Shopee</div>
+      <div class="a" style="--d:.65">Mercado Livre</div>
+      <div class="a" style="--d:.75">YouTube</div>
+      <div class="a" style="--d:.85"><em>Canais próprios</em></div>
+    </div>
+  </div>
+  <p class="small fade" style="--d:1.2;position:absolute;right:104px;bottom:96px;width:380px;text-align:right">Cada canal é ativado conforme a disponibilidade e a economia de cada plataforma.</p>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- 9 · PORTFÓLIO -->
+<section class="slide" data-title="Portfólio">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Portfólio</div>
+    <div style="display:grid;grid-template-columns:440px 1fr;gap:80px;margin-top:30px">
+      <div>
+        <h2 class="a" style="--d:.25">Curadoria de marcas</h2>
+        <div class="a num" style="--d:.45;font-size:150px;line-height:1;margin-top:40px">15+</div>
+        <p class="a" style="--d:.55;margin-top:10px;font-size:19px;color:#3b3935">marcas de cosméticos e maquiagem no portfólio inicial</p>
+        <div class="a num" style="--d:.7;font-size:64px;line-height:1;margin-top:40px">2,5x</div>
+        <p class="a" style="--d:.8;margin-top:10px;font-size:19px;color:#3b3935">markup médio sobre o custo</p>
+      </div>
+      <div>
+        <div id="brands" style="display:grid;grid-template-columns:repeat(5,1fr);gap:22px;margin-top:20px"></div>
+        <p class="a" style="--d:1.3;margin-top:44px;font-size:18px;color:#3b3935">Expansão prevista: casa, moda, acessórios, utensílios, organização e lifestyle, sempre com a curadoria preservando a identidade.</p>
+      </div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section>
+
+<!-- 10 · EVENTOS -->
+<section class="slide dark" data-title="Eventos">
+  <div class="bg"><video class="blurbg" poster="img/evento-por-do-sol.jpg" muted loop playsinline preload="metadata"><source src="videos/eventos.mp4" type="video/mp4"><source src="videos/eventos.webm" type="video/webm"></video></div>
+  <div class="shade heavy"></div>
+  <div style="position:absolute;left:104px;top:200px;width:500px">
+    <div class="eyebrow a" style="--d:.2">Eventos Bhe</div>
+    <h1 class="a" style="--d:.4;margin-top:30px;font-size:64px">A experiência Bhe já <em>aconteceu</em>.</h1>
+    <p class="a" style="--d:.7;margin-top:34px;font-size:19px;color:rgba(255,255,255,.82)">Hair stylists, workshops ao vivo, luau, passeios e convidados no Rio de Janeiro. O formato atrai público e gera conteúdo. A casa transforma esses eventos em agenda contínua.</p>
+  </div>
+  <figure class="a" style="--d:.5;position:absolute;left:672px;top:178px;width:824px;margin:0">
+    <div class="ph" style="position:relative;width:824px;height:464px;box-shadow:0 30px 80px rgba(0,0,0,.55)"><video poster="img/poster-documentario.jpg" muted loop playsinline preload="metadata"><source src="videos/documentario.mp4" type="video/mp4"><source src="videos/documentario.webm" type="video/webm"></video></div>
+    <figcaption class="eyebrow" style="margin-top:22px;font-size:12px">Registro · Beauty House Experience · Rio de Janeiro</figcaption>
+  </figure>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- 11 · FINANCEIRO -->
+<section class="slide" data-title="Financeiro">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Primeira modelagem</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Ponto de equilíbrio</h2>
+    <div style="display:grid;grid-template-columns:360px 1fr;gap:90px;margin-top:56px">
+      <div>
+        <div class="a num" style="--d:.4;font-size:80px;line-height:1;white-space:nowrap">R$ 30 mil</div>
+        <p class="a" style="--d:.5;margin-top:16px;font-size:19px;color:#3b3935">de custo fixo mensal: aluguel, utilidades e uma pessoa de apoio</p>
+        <div class="a" style="--d:.7;margin-top:46px;display:grid;gap:12px;font-size:16px;color:#3b3935">
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:12px;background:var(--ink)"></span>Vendas/mês para cobrir o custo fixo</div>
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:28px;height:12px;background:var(--wood)"></span>Vendas/mês para gerar R$ 15 mil excedentes</div>
+        </div>
+      </div>
+      <div id="chart" style="display:grid;gap:34px;align-content:start;padding-top:6px"></div>
+    </div>
+  </div>
+  <p class="small fade" style="--d:1.5;position:absolute;left:104px;bottom:40px;max-width:1200px">Margem de contribuição após impostos, taxas de plataforma, comissões, frete, descontos e perdas. É hipótese de modelagem, não dado observado.</p>
+</section>
+
+<!-- 12 · PRODUÇÃO -->
+<section class="slide stone" data-title="Produção">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Meta de produção e vendas</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">A meta é medida em canal-hora</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:60px" id="tiers"></div>
+  </div>
+  <p class="small fade" style="--d:1.4;position:absolute;left:104px;bottom:40px;max-width:1200px">Referências de planejamento com ticket médio de R$ 250. Com duas salas simultâneas, 20 lives equivalentes cabem em menos dias de calendário.</p>
+</section>
+
+<!-- 13 · PROGRAMAÇÃO -->
+<section class="slide" data-title="Programação">
+  <div class="ph" style="left:0;top:0;width:520px;height:900px"><video poster="img/poster-noite.jpg" muted loop playsinline preload="metadata"><source src="videos/noite.mp4" type="video/mp4"><source src="videos/noite.webm" type="video/webm"></video></div>
+  <div style="position:absolute;left:600px;top:88px;right:104px">
+    <div class="eyebrow a" style="--d:.1">Programação</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Grade de testes</h2>
+    <div style="margin-top:40px" id="grid"></div>
+  </div>
+</section>
+
+<!-- 14 · 90 DIAS -->
+<section class="slide" data-title="90 dias">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Plano de execução</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Os primeiros 90 dias</h2>
+    <div style="position:relative;margin-top:64px">
+      <div class="grow" style="--d:.4;height:1px;background:var(--ink)"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:56px" id="plan"></div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section>
+
+<!-- 15 · METAS -->
+<section class="slide dark" data-title="Metas">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Gestão</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Três metas simultâneas</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:64px;margin-top:70px" id="goals"></div>
+  </div>
+  <p class="fade" style="--d:1.5;position:absolute;left:104px;bottom:52px;font-family:var(--serif);font-style:italic;font-size:24px;color:rgba(255,255,255,.85)">Escalar apenas o que já provou margem.</p>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- 16 · CONVITE -->
+<section class="slide dark" data-title="Convite">
+  <div class="bg"><video class="soft" poster="img/poster-entrevista.jpg" muted loop playsinline preload="metadata"><source src="videos/entrevista.mp4" type="video/mp4"><source src="videos/entrevista.webm" type="video/webm"></video></div>
+  <div class="shade heavy"></div>
+  <img class="ring" src="img/logo-circulo-preto.png" alt="Bhe." style="--d:.2;position:absolute;left:400px;top:450px;width:360px;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(255,255,255,.25);border-radius:50%">
+  <div style="position:absolute;left:760px;top:190px;width:740px">
+    <div class="eyebrow a" style="--d:.4">O convite</div>
+    <h1 class="a" style="--d:.55;margin-top:30px;font-size:68px">Venha construir a Bhe com a gente.</h1>
+    <div class="a" style="--d:.85;margin-top:52px;display:grid;grid-template-columns:250px 1fr;row-gap:20px;font-size:19px;font-weight:300">
+      <div class="eyebrow" style="padding-top:5px">Captação</div><div style="color:rgba(255,255,255,.6)">a definir com os idealizadores</div>
+      <div class="eyebrow" style="padding-top:5px">Modalidade</div><div style="color:rgba(255,255,255,.6)">a definir</div>
+      <div class="eyebrow" style="padding-top:5px">Uso dos recursos</div><div style="color:rgba(255,255,255,.6)">a definir</div>
+      <div class="eyebrow" style="padding-top:5px">Retorno</div><div style="color:rgba(255,255,255,.6)">a definir</div>
+    </div>
+  </div>
+</section>
+
+</div></div>
+
+<div id="bar"></div>
+<div id="ui">
+  <button id="prev" aria-label="Slide anterior">←</button>
+  <button id="count" aria-label="Número do slide">1 / 16</button>
+  <button id="next" aria-label="Próximo slide">→</button>
+  <button id="fs" aria-label="Tela cheia">Tela cheia</button>
+</div>
+
+<script>
+(function(){
+  // conteúdo gerado
+  var b=document.getElementById('brands');
+  for(var i=1;i<=15;i++){var d=document.createElement('div');d.className='a';d.style.cssText='--d:'+(0.5+i*0.04)+';aspect-ratio:1;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font:400 12px/1 var(--sans);letter-spacing:.2em;color:#a9a59f;text-transform:uppercase';d.textContent='Marca '+(i<10?'0':'')+i;b.appendChild(d);}
+
+  var rows=[['Conservador','20%',150000,225000],['Base','30%',100000,150000],['Agressivo','40%',75000,112500]];
+  var c=document.getElementById('chart'),max=225000;
+  function brl(v){return 'R$ '+(v/1000).toLocaleString('pt-BR')+' mil'}
+  rows.forEach(function(r,i){
+    var w=document.createElement('div');w.className='a';w.style.setProperty('--d',0.5+i*.2);
+    w.innerHTML='<div style="display:flex;justify-content:space-between;align-items:baseline"><h3 style="font-size:30px">'+r[0]+'</h3><span class="eyebrow">margem '+r[1]+'</span></div>'+
+      '<div style="margin-top:14px;display:grid;gap:8px">'+
+      '<div style="display:flex;align-items:center;gap:16px"><div class="grow" style="--d:'+(0.8+i*.2)+';height:22px;width:'+(r[2]/max*78)+'%;background:var(--ink)"></div><span class="num" style="font-size:20px">'+brl(r[2])+'</span></div>'+
+      '<div style="display:flex;align-items:center;gap:16px"><div class="grow" style="--d:'+(0.9+i*.2)+';height:22px;width:'+(r[3]/max*78)+'%;background:var(--wood)"></div><span class="num" style="font-size:20px">'+brl(r[3])+'</span></div></div>';
+    c.appendChild(w);
+  });
+
+  var tiers=[['Validação','R$ 75 mil','12','R$ 6.250','25'],['Base','R$ 100 mil','16','R$ 6.250','25'],['Escala','R$ 150 mil','20','R$ 7.500','30']];
+  var t=document.getElementById('tiers');
+  tiers.forEach(function(r,i){
+    var w=document.createElement('div');w.className='a';w.style.cssText='--d:'+(0.45+i*.18)+';background:var(--paper);padding:40px 40px 44px';
+    w.innerHTML='<div class="eyebrow">'+r[0]+'</div><div class="num" style="font-size:64px;line-height:1;margin-top:22px">'+r[1]+'</div><div class="small" style="margin-top:8px">em vendas por mês</div>'+
+    '<div style="margin-top:34px;display:grid;grid-template-columns:1fr auto;row-gap:14px;font-size:18px;font-weight:300;border-top:1px solid var(--line);padding-top:24px">'+
+    '<span>Lives equivalentes/mês</span><span class="num" style="font-size:22px">'+r[2]+'</span><span>Venda média por live</span><span class="num" style="font-size:22px">'+r[3]+'</span><span>Pedidos por live</span><span class="num" style="font-size:22px">'+r[4]+'</span></div>';
+    t.appendChild(w);
+  });
+
+  var grid=[['12h – 14h','Micro-live e demonstração','Consumo na hora do almoço','Conversão por espectador'],['18h – 20h','Rotina e transformação','Público pós-trabalho','Retenção e pedidos'],['20h – 22h','Live âncora','Maior janela de entretenimento','GMV e margem'],['Sábado','Evento + live','Experiência e conteúdo','GMV e novos seguidores']];
+  var g=document.getElementById('grid');
+  grid.forEach(function(r,i){
+    var w=document.createElement('div');w.className='a';w.style.cssText='--d:'+(0.45+i*.15)+';display:grid;grid-template-columns:190px 1fr 260px;gap:28px;padding:26px 0;border-top:1px solid var(--line)';
+    w.innerHTML='<div class="num" style="font-size:30px">'+r[0]+'</div><div><div style="font-size:21px;font-weight:400">'+r[1]+'</div><div class="small" style="margin-top:6px;font-size:16px">'+r[2]+'</div></div><div style="font-size:16px;color:#3b3935;padding-top:4px"><span class="eyebrow" style="font-size:11px;display:block;margin-bottom:8px">Medir</span>'+r[3]+'</div>';
+    g.appendChild(w);
+  });
+
+  var plan=[['Dias 1 – 30','Fundação',['Catálogo, custo, preço, estoque e margem por SKU','Identidade editorial e papel dos fundadores','Canais, rastreamento de vendas e painel','Testes em 2 ambientes e faixas horárias']],
+    ['Dias 31 – 60','Validação',['Identificar os 20% de formatos que geram mais margem','Lives simultâneas em 2 a 3 ambientes','Influenciadores por comissão e cachê','Primeiras propostas a marcas patrocinadoras']],
+    ['Dias 61 – 90','Escala',['Ampliar horários e ambientes vencedores','Pacotes de patrocínio formalizados','Calendário mensal de programação','Decidir sobre 4+ operações simultâneas']]];
+  var p=document.getElementById('plan');
+  plan.forEach(function(r,i){
+    var w=document.createElement('div');w.className='a';w.style.cssText='--d:'+(0.6+i*.25)+';position:relative;padding-top:40px';
+    w.innerHTML='<span style="position:absolute;left:0;top:-7px;width:14px;height:14px;border-radius:50%;background:var(--ink)"></span><div class="eyebrow">'+r[0]+'</div><h3 style="margin-top:14px;font-size:40px">'+r[1]+'</h3><ul style="margin:24px 0 0;padding:0;list-style:none;display:grid;gap:14px;font-size:18px;font-weight:300;line-height:1.45;color:#3b3935">'+r[2].map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+    p.appendChild(w);
+  });
+
+  var goals=[['Contribuição financeira',['GMV por live e por canal','Margem de contribuição por live','Receita e contribuição por hora']],['Audiência própria',['Seguidores levados aos canais próprios','Recompra em 30, 60 e 90 dias','Alcance, retenção e espectadores']],['Eficiência operacional',['Custo de aquisição de cliente','Cliques em produto e conversão','Receita e custo por influenciador']]];
+  var gl=document.getElementById('goals');
+  goals.forEach(function(r,i){
+    var w=document.createElement('div');w.className='a';w.style.cssText='--d:'+(0.45+i*.2)+';border-top:1px solid rgba(255,255,255,.3);padding-top:30px';
+    w.innerHTML='<h3 style="font-size:36px">'+r[0]+'</h3><ul style="margin:26px 0 0;padding:0;list-style:none;display:grid;gap:14px;font-size:19px;font-weight:300;color:rgba(255,255,255,.75)">'+r[1].map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul>';
+    gl.appendChild(w);
+  });
+
+  // navegação
+  var stage=document.getElementById('stage'),slides=[].slice.call(document.querySelectorAll('.slide')),cur=0;
+  var count=document.getElementById('count'),bar=document.getElementById('bar');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/900);stage.style.transform='scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function countUp(sl){[].forEach.call(sl.querySelectorAll('[data-count]'),function(el){
+    var end=+el.dataset.count,t0=null;function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/1600);el.textContent=Math.round(end*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step);}
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent='0';setTimeout(function(){requestAnimationFrame(step)},500);} });}
+  function go(n){
+    n=Math.max(0,Math.min(slides.length-1,n));if(n===cur&&slides[n].classList.contains('on'))return;
+    slides[cur].classList.remove('on');[].forEach.call(slides[cur].querySelectorAll('video'),function(v){v.pause()});
+    cur=n;var s=slides[cur];void s.offsetWidth;s.classList.add('on');
+    [].forEach.call(s.querySelectorAll('video'),function(v){try{v.currentTime=0;var p=v.play();if(p)p.catch(function(){})}catch(e){}});
+    countUp(s);count.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%';
+  }
+  bar.style.width=(100/slides.length)+'%';
+  document.getElementById('next').onclick=function(){go(cur+1)};
+  document.getElementById('prev').onclick=function(){go(cur-1)};
+  document.getElementById('fs').onclick=function(){var el=document.documentElement;try{if(document.fullscreenElement)document.exitFullscreen();else{var p=el.requestFullscreen&&el.requestFullscreen();if(p&&p.catch)p.catch(function(){})}}catch(e){}};
+  document.addEventListener('keydown',function(e){
+    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
+    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
+    else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='f'||e.key==='F')document.getElementById('fs').click();
+  });
+  document.getElementById('viewport').addEventListener('click',function(e){go(e.clientX>window.innerWidth/3?cur+1:cur-1)});
+  var x0=null;document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(dx<0?cur+1:cur-1);x0=null},{passive:true});
+  // vídeo ausente: mantém a foto de capa (poster) parada
+  
+  countUp(slides[0]);
+})();
+</script>
+</body>
+</html>
