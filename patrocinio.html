@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bhe Patrocínio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* Layout: palco 16:9 (1600x900) escalado para caber na tela; um slide por vez, fotos em sangria, muito branco. */
+:root{
+  --ink:#0b0b0b;        /* preto da logo */
+  --paper:#ffffff;
+  --stone:#ecebe8;      /* porcelanato claro da casa */
+  --mute:#77736d;       /* texto secundário, neutro levemente quente */
+  --wood:#9a6d4b;       /* painel de madeira, usado com parcimônia */
+  --line:rgba(11,11,11,.14);
+  --serif:"Bodoni Moda","Bodoni MT","Didot",Georgia,serif;
+  --sans:"Jost","Futura","Century Gothic","Helvetica Neue",Arial,sans-serif;
+  color-scheme:dark;
+}
+html,body{height:100%;margin:0}
+body{background:#050505;color:var(--ink);font-family:var(--sans);overflow:hidden}
+#viewport{position:fixed;inset:0;overflow:hidden}
+#stage{width:1600px;height:900px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);transform-origin:center center;background:var(--paper);overflow:hidden;flex:none}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .9s ease,visibility 0s linear .9s;overflow:hidden;background:var(--paper)}
+.slide.on{opacity:1;visibility:visible;transition:opacity .9s ease,visibility 0s}
+.dark{background:var(--ink);color:var(--paper)}
+.stone{background:var(--stone)}
+
+/* tipografia */
+.eyebrow{font:400 15px/1 var(--sans);letter-spacing:.32em;text-transform:uppercase;color:var(--mute)}
+.dark .eyebrow{color:rgba(255,255,255,.62)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:76px;line-height:1.04}
+h2{font-size:60px;line-height:1.06}
+h3{font-size:32px;line-height:1.15}
+p{margin:0;font-weight:300;font-size:22px;line-height:1.55}
+.small{font-size:15px;line-height:1.5;color:var(--mute);font-weight:400}
+.dark .small{color:rgba(255,255,255,.55)}
+em{font-style:italic}
+.num{font-family:var(--serif);font-variant-numeric:lining-nums tabular-nums}
+
+/* mídia */
+.ph{position:absolute;overflow:hidden;background:#222}
+.ph img,.ph video{width:100%;height:100%;object-fit:cover;display:block}
+.slide.on .kb img,.slide.on .kb video{animation:kb 14s ease-out both}
+@keyframes kb{from{transform:scale(1.12)}to{transform:scale(1.0)}}
+.bg{position:absolute;inset:0;overflow:hidden}
+.bg img,.bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* vídeos já recortados sem marcas de terceiros; leve ampliação para o movimento */
+.bg video.stretch{transform:scale(1.06)}
+.bg video.soft{transform:scale(1.06)}
+.bg video.blurbg{transform:scale(1.1);filter:blur(14px) saturate(.6)}
+.shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,.55))}
+.shade.heavy{background:rgba(0,0,0,.62)}
+
+/* entrada animada: cada .a entra quando o slide fica ativo */
+.slide.on .a{animation:rise 1.1s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.slide.on .fade{animation:fade 1.6s ease both;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.slide.on .grow{animation:grow 1.4s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d,0) * 1s);transform-origin:left center}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.slide.on .ring{animation:ring 1.4s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes ring{from{opacity:0;transform:translate(-50%,-50%) scale(.6)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+
+.pad{position:absolute;inset:88px 104px}
+.mark{position:absolute;right:56px;bottom:40px;width:64px;opacity:.9}
+.pg{position:absolute;left:104px;bottom:40px;font:400 13px/1 var(--sans);letter-spacing:.24em;color:var(--mute)}
+.dark .pg{color:rgba(255,255,255,.45)}
+
+/* controles */
+#ui{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:5;opacity:.0;transition:opacity .4s}
+body:hover #ui,#ui:focus-within{opacity:1}
+#ui button{all:unset;cursor:pointer;font:400 13px/1 var(--sans);letter-spacing:.14em;color:#fff;background:rgba(255,255,255,.12);padding:10px 14px;border-radius:999px;backdrop-filter:blur(8px)}
+#ui button:focus-visible{outline:2px solid #fff}
+#bar{position:fixed;left:0;bottom:0;height:2px;background:rgba(255,255,255,.7);transition:width .6s ease;z-index:5}
+@media (hover:none){#ui{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  .slide,.slide.on{transition:none}
+  .slide.on .a,.slide.on .fade,.slide.on .grow,.slide.on .ring,.slide.on .kb img,.slide.on .kb video{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div id="viewport"><div id="stage">
+
+<!-- 1 · CAPA -->
+<section class="slide dark on" data-title="Capa">
+  <div class="bg kb"><img src="img/proj-piscina-eventos.jpg" alt="Área da piscina da casa Bhe preparada para evento ao pôr do sol"></div>
+  <div class="shade heavy"></div>
+  <img src="img/logo-branca.png" alt="Bhe. Beauty House Experience" class="a" style="--d:.3;position:absolute;left:50%;top:190px;width:340px;margin-left:-170px">
+  <div class="a" style="--d:.8;position:absolute;left:0;right:0;top:600px;text-align:center">
+    <div class="eyebrow" style="color:rgba(255,255,255,.75)">Proposta comercial</div>
+    <h2 style="margin-top:22px;font-size:64px;color:#fff">Cota de <em>patrocínio</em></h2>
+  </div>
+  <div class="eyebrow a" style="--d:1.1;position:absolute;left:104px;bottom:52px;color:rgba(255,255,255,.6)">Rio de Janeiro · 2026</div>
+</section>
+
+<!-- 2 · A IDEIA -->
+<section class="slide" data-title="A ideia">
+  <div class="ph kb" style="right:0;top:0;width:640px;height:900px"><img src="img/fachada-bhe-entardecer.jpg" alt="Fachada da casa Bhe ao entardecer" style="object-position:50% 60%"></div>
+  <div style="position:absolute;left:104px;top:150px;width:760px">
+    <div class="eyebrow a" style="--d:.1">A Bhe</div>
+    <h1 class="a" style="--d:.25;margin-top:34px">Uma casa que vira <em>cenário</em>, conteúdo, venda e experiência.</h1>
+    <p class="a" style="--d:.55;margin-top:40px;max-width:620px;color:#3b3935">A Beauty House Experience é um hub físico de live commerce, conteúdo, cursos e eventos de beleza no Rio de Janeiro. Cada ambiente tem uma função, e a programação é distribuída em vários canais ao mesmo tempo.</p>
+  </div>
+  <div class="pg">02</div>
+</section>
+
+<!-- 3 · O MOMENTO -->
+<section class="slide dark" data-title="O momento">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">O momento</div>
+    <h2 class="a" style="--d:.25;margin-top:30px;max-width:1100px">O comércio ao vivo explodiu no Brasil, e beleza lidera o D2C.</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:64px;margin-top:96px">
+      <div class="a" style="--d:.5;border-top:1px solid rgba(255,255,255,.25);padding-top:30px">
+        <div class="num" style="font-size:88px;line-height:1;white-space:nowrap"><span data-count="161">161</span>x</div>
+        <p style="margin-top:22px;font-size:19px;color:rgba(255,255,255,.75)">crescimento do GMV médio diário de lives no TikTok Shop, entre maio de 2025 e maio de 2026</p>
+      </div>
+      <div class="a" style="--d:.7;border-top:1px solid rgba(255,255,255,.25);padding-top:30px">
+        <div class="num" style="font-size:88px;line-height:1;white-space:nowrap">R$ <span data-count="791">791</span> mi</div>
+        <p style="margin-top:22px;font-size:19px;color:rgba(255,255,255,.75)">em saúde e beleza D2C em 2025, alta de 44%, uma das categorias mais dinâmicas</p>
+      </div>
+      <div class="a" style="--d:.9;border-top:1px solid rgba(255,255,255,.25);padding-top:30px">
+        <div class="num" style="font-size:88px;line-height:1;white-space:nowrap">R$ 6,5 bi</div>
+        <p style="margin-top:22px;font-size:19px;color:rgba(255,255,255,.75)">movimentados pelo D2C brasileiro em 2025, alta de 35%</p>
+      </div>
+    </div>
+  </div>
+  <div class="small fade" style="--d:1.3;position:absolute;left:104px;bottom:40px;right:200px">Fontes: TikTok Newsroom; Nuvemshop Radar D2C e NuvemCommerce 2026.</div>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- ANTES E DEPOIS · Vitrine de marcas -->
+<section class="slide" data-title="Antes e depois · Vitrine de marcas">
+  <div class="ph fade" style="--d:0;left:0;top:0;width:520px;height:900px"><img src="img/05-sala-painel-madeira-estante.jpg" alt="Vitrine de marcas: foto real do ambiente hoje" style="object-position:50% 50%"></div>
+  <div class="eyebrow fade" style="--d:.3;position:absolute;left:32px;bottom:32px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Hoje · foto real</div>
+  <div class="ph kb fade" style="--d:.5;left:584px;top:88px;width:912px;height:513px"><img src="img/proj-vitrine-marcas.jpg" alt="Vitrine de marcas: proposta de ambientação"></div>
+  <div class="eyebrow fade" style="--d:.8;position:absolute;left:608px;top:563px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Proposta · imagem ilustrativa</div>
+  <div style="position:absolute;left:584px;top:648px;width:912px">
+    <div class="eyebrow a" style="--d:.7">Antes e depois · 01 / 05</div>
+    <h2 class="a" style="--d:.85;margin-top:18px;font-size:48px">Vitrine de marcas</h2>
+    <p class="a" style="--d:1;margin-top:14px;font-size:19px;color:#3b3935;max-width:860px">O painel de madeira e a estante recebem iluminação, produtos e o logo da Bhe. É onde fica o espaço exclusivo do patrocinador.</p>
+  </div>
+</section>
+
+<!-- ANTES E DEPOIS · Estúdio de lives -->
+<section class="slide" data-title="Antes e depois · Estúdio de lives">
+  <div class="ph fade" style="--d:0;left:0;top:0;width:520px;height:900px"><img src="img/04-lounge-sofa-painel-madeira.jpg" alt="Estúdio de lives: foto real do ambiente hoje" style="object-position:50% 50%"></div>
+  <div class="eyebrow fade" style="--d:.3;position:absolute;left:32px;bottom:32px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Hoje · foto real</div>
+  <div class="ph kb fade" style="--d:.5;left:584px;top:88px;width:912px;height:513px"><img src="img/proj-estudio-live.jpg" alt="Estúdio de lives: proposta de ambientação"></div>
+  <div class="eyebrow fade" style="--d:.8;position:absolute;left:608px;top:563px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Proposta · imagem ilustrativa</div>
+  <div style="position:absolute;left:584px;top:648px;width:912px">
+    <div class="eyebrow a" style="--d:.7">Antes e depois · 02 / 05</div>
+    <h2 class="a" style="--d:.85;margin-top:18px;font-size:48px">Estúdio de lives</h2>
+    <p class="a" style="--d:1;margin-top:14px;font-size:19px;color:#3b3935;max-width:860px">O lounge vira bancada de maquiagem com iluminação de estúdio, câmera e vitrine de produtos ao fundo.</p>
+  </div>
+</section>
+
+<!-- ANTES E DEPOIS · Estúdio de entrevistas -->
+<section class="slide" data-title="Antes e depois · Estúdio de entrevistas">
+  <div class="ph fade" style="--d:0;left:0;top:0;width:520px;height:900px"><img src="img/03-sala-teto-preto-varanda.jpg" alt="Estúdio de entrevistas: foto real do ambiente hoje" style="object-position:50% 50%"></div>
+  <div class="eyebrow fade" style="--d:.3;position:absolute;left:32px;bottom:32px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Hoje · foto real</div>
+  <div class="ph kb fade" style="--d:.5;left:584px;top:88px;width:912px;height:513px"><img src="img/proj-estudio-entrevista.jpg" alt="Estúdio de entrevistas: proposta de ambientação"></div>
+  <div class="eyebrow fade" style="--d:.8;position:absolute;left:608px;top:563px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Proposta · imagem ilustrativa</div>
+  <div style="position:absolute;left:584px;top:648px;width:912px">
+    <div class="eyebrow a" style="--d:.7">Antes e depois · 03 / 05</div>
+    <h2 class="a" style="--d:.85;margin-top:18px;font-size:48px">Estúdio de entrevistas</h2>
+    <p class="a" style="--d:1;margin-top:14px;font-size:19px;color:#3b3935;max-width:860px">A sala com teto preto e vista para a varanda recebe poltronas, microfones e a marca na parede de madeira.</p>
+  </div>
+</section>
+
+<!-- ANTES E DEPOIS · Sala de cursos -->
+<section class="slide" data-title="Antes e depois · Sala de cursos">
+  <div class="ph fade" style="--d:0;left:0;top:0;width:520px;height:900px"><img src="img/06-salao-vazio-varanda.jpg" alt="Sala de cursos: foto real do ambiente hoje" style="object-position:50% 50%"></div>
+  <div class="eyebrow fade" style="--d:.3;position:absolute;left:32px;bottom:32px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Hoje · foto real</div>
+  <div class="ph kb fade" style="--d:.5;left:584px;top:88px;width:912px;height:513px"><img src="img/proj-sala-cursos.jpg" alt="Sala de cursos: proposta de ambientação"></div>
+  <div class="eyebrow fade" style="--d:.8;position:absolute;left:608px;top:563px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Proposta · imagem ilustrativa</div>
+  <div style="position:absolute;left:584px;top:648px;width:912px">
+    <div class="eyebrow a" style="--d:.7">Antes e depois · 04 / 05</div>
+    <h2 class="a" style="--d:.85;margin-top:18px;font-size:48px">Sala de cursos</h2>
+    <p class="a" style="--d:1;margin-top:14px;font-size:19px;color:#3b3935;max-width:860px">O salão amplo comporta plateia, tela e bancada de demonstração para os cursos educacionais mensais.</p>
+  </div>
+</section>
+
+<!-- ANTES E DEPOIS · Área de eventos -->
+<section class="slide" data-title="Antes e depois · Área de eventos">
+  <div class="ph fade" style="--d:0;left:0;top:0;width:520px;height:900px"><img src="img/02-vista-superior-piscina.jpg" alt="Área de eventos: foto real do ambiente hoje" style="object-position:50% 70%"></div>
+  <div class="eyebrow fade" style="--d:.3;position:absolute;left:32px;bottom:32px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Hoje · foto real</div>
+  <div class="ph kb fade" style="--d:.5;left:584px;top:88px;width:912px;height:513px"><img src="img/proj-piscina-eventos.jpg" alt="Área de eventos: proposta de ambientação"></div>
+  <div class="eyebrow fade" style="--d:.8;position:absolute;left:608px;top:563px;background:rgba(0,0,0,.55);color:#fff;padding:10px 14px;font-size:12px">Proposta · imagem ilustrativa</div>
+  <div style="position:absolute;left:584px;top:648px;width:912px">
+    <div class="eyebrow a" style="--d:.7">Antes e depois · 05 / 05</div>
+    <h2 class="a" style="--d:.85;margin-top:18px;font-size:48px">Área de eventos</h2>
+    <p class="a" style="--d:1;margin-top:14px;font-size:19px;color:#3b3935;max-width:860px">A piscina e o muro do fundo viram palco para lançamentos, com espreguiçadeiras, iluminação e mesa de produtos.</p>
+  </div>
+</section>
+
+<!-- 5 · CANAIS -->
+<section class="slide dark" data-title="Canais">
+  <div class="bg kb"><img src="img/proj-estudio-live.jpg" alt=""></div>
+  <div class="shade heavy"></div>
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Distribuição</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">Um conteúdo, muitos canais</h2>
+    <div style="margin-top:64px;font-family:var(--serif);font-size:60px;line-height:1.3">
+      <div class="a" style="--d:.45">TikTok Shop</div>
+      <div class="a" style="--d:.55">Shopee</div>
+      <div class="a" style="--d:.65">Mercado Livre</div>
+      <div class="a" style="--d:.75">YouTube</div>
+      <div class="a" style="--d:.85"><em>Canais próprios</em></div>
+    </div>
+  </div>
+  <p class="small fade" style="--d:1.2;position:absolute;right:104px;bottom:96px;width:420px;text-align:right;color:rgba(255,255,255,.8)">Fundadores, microinfluenciadores e grandes influenciadores apresentam a programação da casa.</p>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- 6 · EVENTOS -->
+<section class="slide dark" data-title="Eventos">
+  <div class="bg"><video class="blurbg" poster="img/evento-por-do-sol.jpg" muted loop playsinline preload="metadata"><source src="videos/eventos.mp4" type="video/mp4"><source src="videos/eventos.webm" type="video/webm"></video></div>
+  <div class="shade heavy"></div>
+  <div style="position:absolute;left:104px;top:200px;width:500px">
+    <div class="eyebrow a" style="--d:.2">Eventos Bhe</div>
+    <h1 class="a" style="--d:.4;margin-top:30px;font-size:64px">A experiência Bhe já <em>aconteceu</em>.</h1>
+    <p class="a" style="--d:.7;margin-top:34px;font-size:19px;color:rgba(255,255,255,.82)">Hair stylists, workshops ao vivo, luau, passeios e convidados no Rio de Janeiro. O formato atrai público e gera conteúdo. A casa transforma esses eventos em agenda contínua.</p>
+  </div>
+  <figure class="a" style="--d:.5;position:absolute;left:672px;top:178px;width:824px;margin:0">
+    <div class="ph" style="position:relative;width:824px;height:464px;box-shadow:0 30px 80px rgba(0,0,0,.55)"><video poster="img/poster-documentario.jpg" muted loop playsinline preload="metadata"><source src="videos/documentario.mp4" type="video/mp4"><source src="videos/documentario.webm" type="video/webm"></video></div>
+    <figcaption class="eyebrow" style="margin-top:22px;font-size:12px">Registro · Beauty House Experience · Rio de Janeiro</figcaption>
+  </figure>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- 7 · CONTRAPARTIDAS -->
+<section class="slide stone" data-title="Contrapartidas">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Contrapartidas</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">O que a sua marca recebe</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:52px">
+      <div class="a" style="--d:.45"><div class="ph kb" style="position:relative;height:300px"><img src="img/proj-vitrine-marcas.jpg" alt=""></div><div class="eyebrow" style="margin-top:24px">01</div><h3 style="margin-top:12px">Espaço exclusivo na casa</h3><p style="margin-top:10px;font-size:18px;color:#3b3935">Um ambiente dedicado à marca dentro da Bhe, com os seus produtos em exposição permanente.</p></div>
+      <div class="a" style="--d:.65"><div class="ph kb" style="position:relative;height:300px"><img src="img/proj-estudio-live.jpg" alt=""></div><div class="eyebrow" style="margin-top:24px">02</div><h3 style="margin-top:12px">Presença nas lives</h3><p style="margin-top:10px;font-size:18px;color:#3b3935">A marca aparece nas transmissões ao vivo da casa, nos canais em que a Bhe está presente.</p></div>
+      <div class="a" style="--d:.85"><div class="ph kb" style="position:relative;height:300px"><img src="img/proj-sala-cursos.jpg" alt=""></div><div class="eyebrow" style="margin-top:24px">03</div><h3 style="margin-top:12px">Um curso educacional por mês</h3><p style="margin-top:10px;font-size:18px;color:#3b3935">Todo mês, um curso na sala de cursos da casa com a participação da marca.</p></div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section>
+
+<!-- 8 · A COTA -->
+<section class="slide" data-title="A cota">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Investimento</div>
+    <h2 class="a" style="--d:.25;margin-top:26px">A cota de patrocínio</h2>
+    <p class="a" style="--d:.35;margin-top:18px;font-size:20px;color:#3b3935">Duas formas de pagamento para 12 meses de patrocínio com as mesmas contrapartidas.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:52px">
+      <div class="a" style="--d:.5;border:1px solid var(--line);padding:48px 52px 52px">
+        <div class="eyebrow">Opção 1 · Mensal</div>
+        <div class="num" style="font-size:96px;line-height:1;margin-top:30px;white-space:nowrap">R$ 120 mil</div>
+        <div style="margin-top:36px;border-top:1px solid var(--line);padding-top:26px;display:grid;grid-template-columns:1fr auto;row-gap:14px;font-size:20px;font-weight:300">
+          <span>Parcelas</span><span class="num" style="font-size:24px">12 × R$ 10 mil</span>
+          <span>Pagamento</span><span style="font-size:20px">mensal, durante 1 ano</span>
+        </div>
+      </div>
+      <div class="a" style="--d:.7;background:var(--ink);color:var(--paper);padding:48px 52px 52px">
+        <div class="eyebrow" style="color:rgba(255,255,255,.62)">Opção 2 · Antecipado</div>
+        <div class="num" style="font-size:96px;line-height:1;margin-top:30px;white-space:nowrap">R$ 100 mil</div>
+        <div style="margin-top:36px;border-top:1px solid rgba(255,255,255,.25);padding-top:26px;display:grid;grid-template-columns:1fr auto;row-gap:14px;font-size:20px;font-weight:300">
+          <span>Parcelas</span><span style="font-size:20px">à vista ou em até 3 vezes</span>
+          <span>Economia</span><span class="num" style="font-size:24px">R$ 20 mil</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section>
+
+<!-- 9 · CONVITE -->
+<section class="slide dark" data-title="Convite">
+  <div class="bg kb"><img src="img/proj-estudio-entrevista.jpg" alt=""></div>
+  <div class="shade heavy"></div>
+  <img class="ring" src="img/logo-circulo-preto.png" alt="Bhe." style="--d:.2;position:absolute;left:400px;top:450px;width:360px;transform:translate(-50%,-50%);box-shadow:0 0 0 1px rgba(255,255,255,.25);border-radius:50%">
+  <div style="position:absolute;left:760px;top:250px;width:740px">
+    <div class="eyebrow a" style="--d:.4">O convite</div>
+    <h1 class="a" style="--d:.55;margin-top:30px;font-size:68px">Sua marca dentro da casa Bhe.</h1>
+    <p class="a" style="--d:.85;margin-top:40px;font-size:21px;color:rgba(255,255,255,.8)">Espaço exclusivo, presença nas lives e um curso por mês, durante 12 meses.</p>
+  </div>
+</section>
+
+
+<div id="bar"></div>
+<div id="ui">
+  <button id="prev" aria-label="Slide anterior">←</button>
+  <button id="count" aria-label="Número do slide">1 / 13</button>
+  <button id="next" aria-label="Próximo slide">→</button>
+  <button id="fs" aria-label="Tela cheia">Tela cheia</button>
+</div>
+
+<script>
+(function(){
+  // navegação
+  var stage=document.getElementById('stage'),slides=[].slice.call(document.querySelectorAll('.slide')),cur=0;
+  var count=document.getElementById('count'),bar=document.getElementById('bar');
+  function fit(){var s=Math.min(window.innerWidth/1600,window.innerHeight/900);stage.style.transform='translate(-50%,-50%) scale('+s+')';}
+  window.addEventListener('resize',fit);fit();
+  function countUp(sl){[].forEach.call(sl.querySelectorAll('[data-count]'),function(el){
+    var end=+el.dataset.count,t0=null;function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/1600);el.textContent=Math.round(end*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step);}
+    if(!matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent='0';setTimeout(function(){requestAnimationFrame(step)},500);} });}
+  function go(n){
+    n=Math.max(0,Math.min(slides.length-1,n));if(n===cur&&slides[n].classList.contains('on'))return;
+    slides[cur].classList.remove('on');[].forEach.call(slides[cur].querySelectorAll('video'),function(v){v.pause()});
+    cur=n;var s=slides[cur];void s.offsetWidth;s.classList.add('on');
+    [].forEach.call(s.querySelectorAll('video'),function(v){try{v.currentTime=0;var p=v.play();if(p)p.catch(function(){})}catch(e){}});
+    countUp(s);count.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%';
+  }
+  bar.style.width=(100/slides.length)+'%';
+  document.getElementById('next').onclick=function(){go(cur+1)};
+  document.getElementById('prev').onclick=function(){go(cur-1)};
+  document.getElementById('fs').onclick=function(){var el=document.documentElement;try{if(document.fullscreenElement)document.exitFullscreen();else{var p=el.requestFullscreen&&el.requestFullscreen();if(p&&p.catch)p.catch(function(){})}}catch(e){}};
+  document.addEventListener('keydown',function(e){
+    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
+    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
+    else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+    else if(e.key==='f'||e.key==='F')document.getElementById('fs').click();
+  });
+  document.getElementById('viewport').addEventListener('click',function(e){go(e.clientX>window.innerWidth/3?cur+1:cur-1)});
+  var x0=null;document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  document.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(dx<0?cur+1:cur-1);x0=null},{passive:true});
+  // vídeo ausente: mantém a foto de capa (poster) parada
+  
+  countUp(slides[0]);
+})();
+</script>
+</body>
+</html>
