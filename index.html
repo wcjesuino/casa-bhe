@@ -79,6 +79,20 @@ em{font-style:italic}
 .pg{position:absolute;left:104px;bottom:40px;font:400 13px/1 var(--sans);letter-spacing:.24em;color:var(--mute)}
 .dark .pg{color:rgba(255,255,255,.45)}
 
+.ph{border-radius:18px}
+.ph.flush{border-radius:0}
+.lights{position:absolute;inset:0;overflow:hidden;transition:opacity 1.6s ease}
+.lights span{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(214,176,128,.55),rgba(214,176,128,0) 68%);filter:blur(18px);opacity:.5;animation:drift 16s ease-in-out infinite alternate}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,-30px) scale(1.15)}}
+.slide.st1 .lights{opacity:.35}
+/* etapas: cada clique revela o próximo [data-step] antes de mudar de slide */
+.slide [data-step]{opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.slide .bg[data-step],.slide .shade[data-step]{transform:none}
+.slide.st1 [data-step="1"],.slide.st2 [data-step="2"],.slide.st3 [data-step="3"],.slide.st4 [data-step="4"],.slide.st5 [data-step="5"],.slide.st6 [data-step="6"]{opacity:1;transform:none}
+.mline{display:flex;align-items:baseline;justify-content:space-between;gap:40px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.14)}
+.mline i{font:400 14px/1 var(--sans);font-style:normal;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:10px 16px;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.slide [data-step],.lights span{transition:none;animation:none}}
+
 /* controles */
 #ui{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;z-index:5;opacity:.0;transition:opacity .4s}
 body:hover #ui,#ui:focus-within{opacity:1}
@@ -102,87 +116,105 @@ body:hover #ui,#ui:focus-within{opacity:1}
 
 <div id="viewport"><div id="stage">
 
-<!-- 1 · CAPA -->
-<section class="slide dark on" data-title="Capa">
-  <div class="bg kb"><video class="stretch" poster="img/poster-eventos.jpg" muted loop playsinline autoplay preload="metadata"><source src="videos/eventos.mp4" type="video/mp4"><source src="videos/eventos.webm" type="video/webm"></video></div>
-  <div class="shade heavy"></div>
-  <div style="position:absolute;left:0;right:0;top:190px;text-align:center">
-    <img src="img/logo-branca.png" alt="Bhe. Beauty House Experience" class="a" style="--d:.3;width:230px">
-    <h1 class="a" style="--d:1;margin-top:56px;font-size:104px;line-height:1.02;color:#fff">Três dias nunca<br>foram <em>suficientes</em>.</h1>
-    <p class="a" style="--d:1.7;margin-top:30px;font-family:var(--serif);font-style:italic;font-size:30px;color:rgba(255,255,255,.85)">A Bhe está de volta. E, desta vez, veio para ficar.</p>
+<!-- 1 · CAPA (3 tempos: logo; frase + vídeo; volta) -->
+<section class="slide dark on" data-title="Capa" data-steps="2" style="background:#000">
+  <div class="lights" aria-hidden="true"><span style="left:8%;top:18%;width:360px;height:360px"></span><span style="left:70%;top:10%;width:280px;height:280px;animation-delay:-4s"></span><span style="left:58%;top:62%;width:420px;height:420px;animation-delay:-8s"></span><span style="left:18%;top:66%;width:240px;height:240px;animation-delay:-2s"></span><span style="left:40%;top:30%;width:180px;height:180px;animation-delay:-6s"></span></div>
+  <div class="bg kb" data-step="1" style="transition-duration:2.2s"><video class="stretch" poster="img/poster-eventos.jpg" muted loop playsinline preload="metadata"><source src="videos/eventos.mp4" type="video/mp4"><source src="videos/eventos.webm" type="video/webm"></video></div>
+  <div class="shade heavy" data-step="1" style="transition-duration:2.2s"></div>
+  <div style="position:absolute;left:0;right:0;top:170px;text-align:center">
+    <img src="img/logo-branca.png" alt="Bhe. Beauty House Experience" class="fade" style="--d:.4;width:260px">
+    <h1 data-step="1" style="margin-top:60px;font-size:104px;line-height:1.02;color:#fff">Três dias nunca<br>foram <em>suficientes</em>.</h1>
+    <p data-step="2" style="margin-top:34px;font-family:var(--serif);font-style:italic;font-size:32px;color:rgba(255,255,255,.88)">A Bhe está de volta. E, desta vez, veio para ficar.</p>
   </div>
-  <div class="eyebrow a" style="--d:1.6;position:absolute;left:104px;bottom:64px;color:rgba(255,255,255,.75)">Rio de Janeiro · 2026</div>
-  
+  <div class="eyebrow" data-step="1" style="position:absolute;left:104px;bottom:64px;color:rgba(255,255,255,.7)">Rio de Janeiro · 2026</div>
 </section>
 
-<!-- 2 · HISTÓRIA -->
-<section class="slide" data-title="Nossa história">
-  <div style="position:absolute;left:104px;top:120px;width:620px">
-    <div class="eyebrow a" style="--d:.1">Nossa história · 2019</div>
-    <h2 class="a" style="--d:.25;margin-top:28px;font-size:54px">Colocamos <em>Wella</em> e <em>L'Oréal</em> no mesmo palco. Antes de qualquer um.</h2>
-    <p class="a" style="--d:.5;margin-top:32px;font-size:19px;color:#3b3935">Em 2019, as duas maiores marcas de beleza do país ensinaram técnicas lado a lado, numa mansão no Joá. As 80 vagas acabaram antes do evento começar.</p>
-    <div class="a" style="--d:.7;display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:44px">
-      <div style="border-top:1px solid var(--line);padding-top:18px"><div class="num" style="font-size:52px;line-height:1">3</div><div class="small" style="margin-top:8px">dias de imersão</div></div>
-      <div style="border-top:1px solid var(--line);padding-top:18px"><div class="num" style="font-size:52px;line-height:1">80</div><div class="small" style="margin-top:8px">vagas esgotadas</div></div>
-      <div style="border-top:1px solid var(--line);padding-top:18px"><div class="num" style="font-size:52px;line-height:1">11</div><div class="small" style="margin-top:8px">embaixadores de 3 marcas</div></div>
-    </div>
-    <div class="a" style="--d:.9;margin-top:48px;display:flex;align-items:center;gap:44px">
-      <img src="img/logo-wella.png" alt="Wella Professionals" style="height:78px">
-      <img src="img/logo-loreal.png" alt="L'Oréal" style="height:30px">
-      <img src="img/logo-brae.png" alt="Braé" style="height:24px">
-    </div>
+<!-- 2 · HISTÓRIA: MESMO PALCO -->
+<section class="slide" data-title="Wella e L'Oréal" data-steps="2">
+  <div class="eyebrow a" style="--d:.1;position:absolute;left:0;right:0;top:130px;text-align:center">Nossa história</div>
+  <div style="position:absolute;left:0;right:0;top:250px;display:flex;align-items:center;justify-content:center;gap:56px">
+    <img src="img/logo-wella.png" alt="Wella Professionals" class="a" style="--d:.3;height:170px">
+    <span class="a" style="--d:.5;font-family:var(--serif);font-size:72px">e</span>
+    <img src="img/logo-loreal.png" alt="L'Oréal" class="a" style="--d:.7;height:66px">
   </div>
-  <div style="position:absolute;left:800px;top:120px;width:696px">
-    <div style="display:grid;grid-template-columns:repeat(3,212px);gap:28px 30px">
-      <div class="a" style="--d:0.50"><div class="ph" style="position:relative;width:212px;height:212px"><img src="img/emb-anderson-couto.jpg" alt="Anderson Couto"></div><div style="margin-top:12px;font-family:var(--serif);font-size:22px">Anderson Couto</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Wella</div></div>
-      <div class="a" style="--d:0.58"><div class="ph" style="position:relative;width:212px;height:212px"><img src="img/emb-jackson-nunes.jpg" alt="Jackson Nunes"></div><div style="margin-top:12px;font-family:var(--serif);font-size:22px">Jackson Nunes</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Wella</div></div>
-      <div class="a" style="--d:0.66"><div class="ph" style="position:relative;width:212px;height:212px"><img src="img/emb-renato-fuzz.jpg" alt="Renato Fuzz"></div><div style="margin-top:12px;font-family:var(--serif);font-size:22px">Renato Fuzz</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Wella</div></div>
-      <div class="a" style="--d:0.74"><div class="ph" style="position:relative;width:212px;height:212px"><img src="img/emb-costatto.jpg" alt="Costatto"></div><div style="margin-top:12px;font-family:var(--serif);font-size:22px">Costatto</div><div class="eyebrow" style="margin-top:6px;font-size:11px">L'Oréal</div></div>
-      <div class="a" style="--d:0.82"><div class="ph" style="position:relative;width:212px;height:212px"><img src="img/emb-felipe-lobeu.jpg" alt="Felipe Lobeu"></div><div style="margin-top:12px;font-family:var(--serif);font-size:22px">Felipe Lobeu</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Braé Hair Care</div></div>
-      <div class="a" style="--d:0.90"><div class="ph" style="position:relative;width:212px;height:212px"><img src="img/emb-natan-correia.jpg" alt="Natan Correia"></div><div style="margin-top:12px;font-family:var(--serif);font-size:22px">Natan Correia</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Braé Hair Care</div></div>
-    </div>
-    <p class="small a" style="--d:1;margin-top:26px;font-size:14px">Também no time: Vivi Siqueira, Fil Freitas e Brunna Fabricio (L'Oréal), Danilo Herbert e Philipe Douglas (Braé Hair Care).</p>
-  </div>
+  <h2 class="a" style="--d:1;position:absolute;left:0;right:0;top:480px;text-align:center;font-size:76px">no mesmo palco.</h2>
+  <p data-step="1" style="position:absolute;left:0;right:0;top:600px;text-align:center;font-family:var(--serif);font-style:italic;font-size:38px;color:var(--ink)">Ensinando técnicas, lado a lado.</p>
+  <p data-step="2" style="position:absolute;left:0;right:0;top:700px;text-align:center;font-size:24px;font-weight:400;letter-spacing:.02em;color:var(--body)">A Bhe fez isso em 2019. Antes de qualquer um.</p>
   <img class="mark" src="img/logo-preta.png" alt="">
 </section>
 
-<!-- 3 · DESAFIOS NA ILHA -->
-<section class="slide dark" data-title="Desafios na Ilha">
-  <div class="ph" style="left:0;top:0;width:1600px;height:400px"><video poster="img/poster-desafios-ilha.jpg" muted loop playsinline preload="metadata"><source src="videos/desafios-ilha.mp4" type="video/mp4"><source src="videos/desafios-ilha.webm" type="video/webm"></video></div>
-  <div style="position:absolute;left:104px;top:450px;width:660px">
-    <div class="eyebrow a" style="--d:.2">Desafios na Ilha · Angra dos Reis · 2020</div>
-    <h2 class="a" style="--d:.35;margin-top:22px;font-size:52px">Depois, levamos os melhores do Brasil para uma ilha.</h2>
-    <p class="a" style="--d:.55;margin-top:22px;font-size:18px;color:rgba(255,255,255,.8)">E transmitimos tudo ao vivo. Em 2020, 16 embaixadores de Wella, L'Oréal, Braé, Keune e Aneethun viveram três dias em Angra dos Reis ensinando criatividade, carreira, corte e cor, num formato de reality.</p>
+<!-- 3 · 2019 EM NÚMEROS E EMBAIXADORES -->
+<section class="slide" data-title="2019" data-steps="2">
+  <div class="pad">
+    <div class="eyebrow a" style="--d:.1">Mansão no Joá · Rio de Janeiro · 2019</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:56px;margin-top:40px">
+      <div class="a" style="--d:.3;border-top:1px solid var(--line);padding-top:24px"><div class="num" style="font-size:110px;line-height:1"><span data-count="3">3</span></div><p style="margin-top:12px;font-size:20px">dias de imersão</p></div>
+      <div class="a" style="--d:.5;border-top:1px solid var(--line);padding-top:24px"><div class="num" style="font-size:110px;line-height:1"><span data-count="80">80</span></div><p style="margin-top:12px;font-size:20px">vagas esgotadas antes do evento</p></div>
+      <div class="a" style="--d:.7;border-top:1px solid var(--line);padding-top:24px"><div class="num" style="font-size:110px;line-height:1"><span data-count="11">11</span></div><p style="margin-top:12px;font-size:20px">embaixadores de Wella, L'Oréal e Braé</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,200px);gap:32px;margin-top:56px">
+      <div data-step="1" style="transition-delay:0.00s"><div class="ph" style="position:relative;width:200px;height:200px"><img src="img/emb-anderson-couto.jpg" alt="Anderson Couto"></div><div style="margin-top:14px;font-family:var(--serif);font-size:22px">Anderson Couto</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Wella</div></div>
+      <div data-step="1" style="transition-delay:0.18s"><div class="ph" style="position:relative;width:200px;height:200px"><img src="img/emb-jackson-nunes.jpg" alt="Jackson Nunes"></div><div style="margin-top:14px;font-family:var(--serif);font-size:22px">Jackson Nunes</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Wella</div></div>
+      <div data-step="1" style="transition-delay:0.36s"><div class="ph" style="position:relative;width:200px;height:200px"><img src="img/emb-renato-fuzz.jpg" alt="Renato Fuzz"></div><div style="margin-top:14px;font-family:var(--serif);font-size:22px">Renato Fuzz</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Wella</div></div>
+      <div data-step="1" style="transition-delay:0.54s"><div class="ph" style="position:relative;width:200px;height:200px"><img src="img/emb-costatto.jpg" alt="Costatto"></div><div style="margin-top:14px;font-family:var(--serif);font-size:22px">Costatto</div><div class="eyebrow" style="margin-top:6px;font-size:11px">L'Oréal</div></div>
+      <div data-step="1" style="transition-delay:0.72s"><div class="ph" style="position:relative;width:200px;height:200px"><img src="img/emb-felipe-lobeu.jpg" alt="Felipe Lobeu"></div><div style="margin-top:14px;font-family:var(--serif);font-size:22px">Felipe Lobeu</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Braé Hair Care</div></div>
+      <div data-step="1" style="transition-delay:0.90s"><div class="ph" style="position:relative;width:200px;height:200px"><img src="img/emb-natan-correia.jpg" alt="Natan Correia"></div><div style="margin-top:14px;font-family:var(--serif);font-size:22px">Natan Correia</div><div class="eyebrow" style="margin-top:6px;font-size:11px">Braé Hair Care</div></div>
+    </div>
+    <p data-step="2" class="small" style="margin-top:26px;font-size:15px">Também no time: Vivi Siqueira, Fil Freitas e Brunna Fabricio (L'Oréal), Danilo Herbert e Philipe Douglas (Braé Hair Care).</p>
   </div>
-  <figure class="a" style="--d:.5;position:absolute;left:824px;top:450px;width:672px;margin:0">
-    <div class="ph" style="position:relative;width:672px;height:259px"><img src="img/ilha-time.jpg" alt="Profissionais do Desafios na Ilha"></div>
-    <figcaption class="small" style="margin-top:14px;font-size:13px">Entre eles, Felipe Lobeu, Brunna Fabricio, Tiago Aprigio, Ricky Moica, Suellen Azevedo, Chris Rodrigues e Washington Nunnes.</figcaption>
-  </figure>
+</section>
+
+<!-- 4 · JURERÊ INTERNACIONAL -->
+<section class="slide dark" data-title="Jurerê Internacional">
+  <div class="bg"><video class="blurbg" poster="img/poster-evento-festa.jpg" muted loop playsinline preload="metadata"><source src="videos/evento-festa.mp4" type="video/mp4"><source src="videos/evento-festa.webm" type="video/webm"></video></div>
+  <div class="shade heavy" style="background:rgba(0,0,0,.74)"></div>
+  <div class="fade" aria-hidden="true" style="--d:.2;position:absolute;left:60px;right:0;top:120px;font-family:var(--serif);font-size:300px;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.22);white-space:nowrap">Jurerê</div>
+  <div style="position:absolute;left:104px;top:470px;width:900px">
+    <div class="eyebrow a" style="--d:.4">Jurerê Internacional · Florianópolis · 2019</div>
+    <h2 class="a" style="--d:.6;margin-top:24px;font-size:58px;color:#fff">Depois, a Bhe levou a experiência para Santa Catarina.</h2>
+    <p class="a" style="--d:.9;margin-top:24px;font-size:20px">Três dias em Jurerê Internacional, com a mesma fórmula: técnica, conteúdo, entretenimento e as marcas em cena.</p>
+  </div>
   <img class="mark" src="img/logo-branca.png" alt="">
 </section>
 
-<!-- 4 · MANIFESTO -->
-<section class="slide dark" data-title="Sem data para acabar">
-  <div class="bg"><video class="blurbg" poster="img/poster-documentario.jpg" muted loop playsinline preload="metadata"><source src="videos/documentario.mp4" type="video/mp4"><source src="videos/documentario.webm" type="video/webm"></video></div>
-  <div class="shade heavy" style="background:rgba(0,0,0,.72)"></div>
-  <div style="position:absolute;left:104px;top:170px;width:720px">
-    <div style="font-family:var(--serif);font-size:46px;line-height:1.55;color:rgba(255,255,255,.6)">
-      <div class="a" style="--d:.3"><span style="color:#fff">Três dias</span> na mansão do Joá.</div>
-      <div class="a" style="--d:.9"><span style="color:#fff">Três dias</span> numa ilha em Angra.</div>
-      <div class="a" style="--d:1.5"><span style="color:#fff">Três dias</span> ao vivo para o Brasil.</div>
-      <div class="a" style="--d:2.3;color:#fff;font-style:italic;margin-top:22px">Agora, sem data para acabar.</div>
-    </div>
+<!-- 5 · DESAFIOS NA ILHA -->
+<section class="slide dark" data-title="Desafios na Ilha">
+  <div class="ph a" style="--d:.2;left:104px;top:110px;width:880px;height:495px"><video poster="img/poster-desafios-embaixadores.jpg" muted loop playsinline preload="metadata"><source src="videos/desafios-embaixadores.mp4" type="video/mp4"><source src="videos/desafios-embaixadores.webm" type="video/webm"></video></div>
+  <p class="small a" style="--d:.6;position:absolute;left:104px;top:628px;width:880px;font-size:14px">Na tela, alguns dos embaixadores: Brunna Fabricio (L'Oréal), Felipe Lobeu (Aneethun), Tiago Aprigio (Keune), Ricky Moica (Wella) e Suellen Azevedo (Braé).</p>
+  <div style="position:absolute;left:1040px;top:110px;width:456px">
+    <div class="eyebrow a" style="--d:.3">Desafios na Ilha · Angra dos Reis · 2020</div>
+    <h2 class="a" style="--d:.45;margin-top:22px;font-size:48px">Depois, levamos os melhores do Brasil para uma ilha.</h2>
+    <p class="a" style="--d:.65;margin-top:22px;font-size:18px;color:rgba(255,255,255,.8)">E transmitimos tudo ao vivo. 16 embaixadores de Wella, L'Oréal, Braé, Keune e Aneethun, três dias ensinando criatividade, carreira, corte e cor, num formato de reality.</p>
   </div>
-  <div class="fade" style="--d:2.8;position:absolute;left:900px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.18)"></div>
-  <div style="position:absolute;left:980px;top:280px;width:520px">
-    <img src="img/logo-branca.png" alt="Bhe." class="a" style="--d:3;width:200px">
-    <h2 class="a" style="--d:3.4;margin-top:40px;font-size:66px;color:#fff">A Bhe vira <em>casa</em>.</h2>
+  <div class="ph a" style="--d:.8;left:1040px;top:640px;width:456px;height:176px"><img src="img/ilha-time.jpg" alt="Profissionais do Desafios na Ilha"></div>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section>
+
+<!-- 6 · MANIFESTO (uma linha por clique) -->
+<section class="slide dark" data-title="Três dias" data-steps="4">
+  <div class="bg"><video class="blurbg" poster="img/poster-documentario.jpg" muted loop playsinline preload="metadata"><source src="videos/documentario.mp4" type="video/mp4"><source src="videos/documentario.webm" type="video/webm"></video></div>
+  <div class="shade heavy" style="background:rgba(0,0,0,.76)"></div>
+  <div style="position:absolute;left:104px;top:170px;right:104px;font-family:var(--serif);font-size:54px;line-height:1.25;color:rgba(255,255,255,.62)">
+    <div class="mline a" style="--d:.3"><span><span style="color:#fff">Três dias</span> na mansão do Joá.</span><i>Evento presencial · desfile</i></div>
+    <div class="mline" data-step="1"><span><span style="color:#fff">Três dias</span> em Jurerê Internacional.</span><i>Evento presencial</i></div>
+    <div class="mline" data-step="2"><span><span style="color:#fff">Três dias</span> numa ilha em Angra.</span><i>Reality</i></div>
+    <div class="mline" data-step="3"><span><span style="color:#fff">Três dias</span> ao vivo para o Brasil todo.</span><i>Online ao vivo</i></div>
+    <div data-step="4" style="margin-top:44px;font-size:72px;color:#fff;font-style:italic">Agora, sem data para acabar.</div>
+  </div>
+</section>
+
+<!-- 7 · A BHE AGORA É CASA -->
+<section class="slide dark" data-title="A Bhe agora é casa" data-steps="1" style="background:#000">
+  <div class="lights" aria-hidden="true"><span style="left:8%;top:18%;width:360px;height:360px"></span><span style="left:70%;top:10%;width:280px;height:280px;animation-delay:-4s"></span><span style="left:58%;top:62%;width:420px;height:420px;animation-delay:-8s"></span><span style="left:18%;top:66%;width:240px;height:240px;animation-delay:-2s"></span><span style="left:40%;top:30%;width:180px;height:180px;animation-delay:-6s"></span></div>
+  <div style="position:absolute;left:0;right:0;top:250px;text-align:center">
+    <img src="img/logo-branca.png" alt="Bhe. Beauty House Experience" class="fade" style="--d:.3;width:280px">
+    <h1 data-step="1" style="margin-top:64px;font-size:100px;color:#fff">A Bhe agora é <em>casa</em>.</h1>
   </div>
 </section>
 
 <!-- 5 · A IDEIA -->
 <section class="slide" data-title="A ideia">
-  <div class="ph kb" style="right:0;top:0;width:640px;height:900px"><img src="img/fachada-bhe-entardecer.jpg" alt="Fachada da Casa Bhe ao entardecer" style="object-position:50% 60%"></div>
+  <div class="ph kb flush" style="right:0;top:0;width:640px;height:900px"><img src="img/fachada-bhe-entardecer.jpg" alt="Fachada da Casa Bhe ao entardecer" style="object-position:50% 60%"></div>
   <div style="position:absolute;left:104px;top:140px;width:780px">
     <div class="eyebrow a" style="--d:.1">Apresentamos a Casa Bhe</div>
     <h1 class="a" style="--d:.25;margin-top:34px;font-size:68px">O lugar onde a beleza acontece <em>todos os dias</em>.</h1>
@@ -216,11 +248,11 @@ body:hover #ui,#ui:focus-within{opacity:1}
 
 <!-- 4 · A CASA -->
 <section class="slide" data-title="A casa">
-  <div class="ph kb fade" style="--d:0;left:0;top:0;width:760px;height:900px"><img src="img/proj-vitrine-marcas.jpg" alt="Vitrine de marcas"></div>
-  <div class="ph kb fade" style="--d:.3;left:784px;top:0;width:400px;height:438px"><img src="img/proj-estudio-live.jpg" alt="Estúdio de lives"></div>
-  <div class="ph kb fade" style="--d:.5;left:1208px;top:0;width:392px;height:438px"><img src="img/proj-sala-cursos.jpg" alt="Sala de cursos"></div>
-  <div class="ph kb fade" style="--d:.7;left:784px;top:462px;width:400px;height:438px"><img src="img/proj-piscina-eventos.jpg" alt="Área de eventos na piscina"></div>
-  <div style="position:absolute;left:1236px;top:500px;width:300px">
+  <div class="ph kb fade" style="--d:0;left:56px;top:56px;width:704px;height:788px"><img src="img/proj-vitrine-marcas.jpg" alt="Vitrine de marcas"></div>
+  <div class="ph kb fade" style="--d:.3;left:784px;top:56px;width:384px;height:382px"><img src="img/proj-estudio-live.jpg" alt="Estúdio de lives"></div>
+  <div class="ph kb fade" style="--d:.5;left:1192px;top:56px;width:352px;height:382px"><img src="img/proj-sala-cursos.jpg" alt="Sala de cursos"></div>
+  <div class="ph kb fade" style="--d:.7;left:784px;top:462px;width:384px;height:382px"><img src="img/proj-piscina-eventos.jpg" alt="Área de eventos na piscina"></div>
+  <div style="position:absolute;left:1220px;top:500px;width:300px">
     <div class="eyebrow a" style="--d:.8">Rio de Janeiro</div>
     <h2 class="a" style="--d:.95;margin-top:22px;font-size:64px">A casa</h2>
     <p class="a" style="--d:1.15;margin-top:22px;font-size:18px;color:#3b3935">Ambientes amplos, luz natural, piscina e áreas integradas. Um estúdio pronto para gravar, vender e receber.</p>
@@ -386,11 +418,11 @@ body:hover #ui,#ui:focus-within{opacity:1}
   <div style="position:absolute;left:104px;top:200px;width:500px">
     <div class="eyebrow a" style="--d:.2">Eventos Bhe</div>
     <h1 class="a" style="--d:.4;margin-top:30px;font-size:64px">A experiência Bhe já <em>aconteceu</em>.</h1>
-    <p class="a" style="--d:.7;margin-top:34px;font-size:19px;color:rgba(255,255,255,.82)">Hair stylists, workshops ao vivo, luau, passeios e convidados no Rio de Janeiro. O formato atrai público e gera conteúdo. A casa transforma esses eventos em agenda contínua.</p>
+    <p class="a" style="--d:.7;margin-top:34px;font-size:19px;color:rgba(255,255,255,.82)">Mansão no Joá, Jurerê Internacional e uma ilha em Angra dos Reis. Workshops, desfiles, luau, passeios e um reality ao vivo para o Brasil. A casa transforma tudo isso em agenda contínua.</p>
   </div>
   <figure class="a" style="--d:.5;position:absolute;left:672px;top:178px;width:824px;margin:0">
-    <div class="ph" style="position:relative;width:824px;height:464px;box-shadow:0 30px 80px rgba(0,0,0,.55)"><video poster="img/poster-documentario.jpg" muted loop playsinline preload="metadata"><source src="videos/documentario.mp4" type="video/mp4"><source src="videos/documentario.webm" type="video/webm"></video></div>
-    <figcaption class="eyebrow" style="margin-top:22px;font-size:12px">Registro · Beauty House Experience · Rio de Janeiro</figcaption>
+    <div class="ph" style="position:relative;width:824px;height:464px;box-shadow:0 30px 80px rgba(0,0,0,.55)"><video poster="img/poster-eventos-bhe.jpg" muted loop playsinline preload="metadata"><source src="videos/eventos-bhe.mp4" type="video/mp4"><source src="videos/eventos-bhe.webm" type="video/webm"></video></div>
+    <figcaption class="eyebrow" style="margin-top:22px;font-size:12px">Mansão no Joá · Desafios na Ilha · Beauty House Experience</figcaption>
   </figure>
   <img class="mark" src="img/logo-branca.png" alt="">
 </section>
@@ -458,15 +490,24 @@ body:hover #ui,#ui:focus-within{opacity:1}
   <img class="mark" src="img/logo-branca.png" alt="">
 </section>
 
-<!-- FECHAMENTO -->
-<section class="slide dark" data-title="Movimento">
+<!-- FECHAMENTO 1 (fundo preto, uma frase por clique) -->
+<section class="slide dark" data-title="O movimento cresce" data-steps="2" style="background:#000">
+  <div class="lights" aria-hidden="true"><span style="left:8%;top:18%;width:360px;height:360px"></span><span style="left:70%;top:10%;width:280px;height:280px;animation-delay:-4s"></span><span style="left:58%;top:62%;width:420px;height:420px;animation-delay:-8s"></span><span style="left:18%;top:66%;width:240px;height:240px;animation-delay:-2s"></span><span style="left:40%;top:30%;width:180px;height:180px;animation-delay:-6s"></span></div>
+  <div style="position:absolute;left:0;right:0;top:250px;text-align:center;font-family:var(--serif);font-size:88px;line-height:1.35;color:#fff">
+    <div class="a" style="--d:.3">O evento acaba.</div>
+    <div data-step="1">A casa fica.</div>
+    <div data-step="2" style="font-style:italic">O movimento cresce.</div>
+  </div>
+</section>
+
+<!-- FECHAMENTO 2 (logo; assistir ou estar dentro; convite) -->
+<section class="slide dark" data-title="Movimento" data-steps="3">
   <div class="bg kb"><video class="stretch" poster="img/poster-eventos.jpg" muted loop playsinline preload="metadata"><source src="videos/eventos.mp4" type="video/mp4"><source src="videos/eventos.webm" type="video/webm"></video></div>
-  <div class="shade heavy" style="background:rgba(0,0,0,.7)"></div>
+  <div class="shade heavy" style="background:rgba(0,0,0,.72)"></div>
   <div style="position:absolute;left:0;right:0;top:150px;text-align:center">
-    <div class="eyebrow a" style="--d:.3;color:rgba(255,255,255,.75)">O evento acaba. A casa fica. O movimento cresce.</div>
-    <img src="img/logo-branca.png" alt="Bhe." class="a" style="--d:1;width:210px;margin-top:56px">
-    <h1 class="a" style="--d:1.6;margin-top:44px;font-size:92px;line-height:1.05;color:#fff">Sua marca pode assistir.<br>Ou pode estar <em>dentro</em>.</h1>
-    <p class="a" style="--d:2.4;margin-top:40px;font-family:var(--serif);font-style:italic;font-size:30px;color:rgba(255,255,255,.88)">Venha construir a Bhe com a gente.</p>
+    <img src="img/logo-branca.png" alt="Bhe." class="a" style="--d:.3;width:230px">
+    <h1 style="margin-top:56px;font-size:92px;line-height:1.08;color:#fff"><span data-step="1" style="display:block">Sua marca pode assistir.</span><span data-step="2" style="display:block">Ou pode estar <em>dentro</em>.</span></h1>
+    <p data-step="3" style="margin-top:44px;font-family:var(--serif);font-style:italic;font-size:34px;color:rgba(255,255,255,.9)">Venha construir a Casa Bhe conosco.</p>
   </div>
 </section>
 
@@ -476,7 +517,7 @@ body:hover #ui,#ui:focus-within{opacity:1}
 <div id="bar"></div>
 <div id="ui">
   <button id="prev" aria-label="Slide anterior">←</button>
-  <button id="count" aria-label="Número do slide">1 / 23</button>
+  <button id="count" aria-label="Número do slide">1 / 27</button>
   <button id="next" aria-label="Próximo slide">→</button>
   <button id="fs" aria-label="Tela cheia">Tela cheia</button>
 </div>
@@ -528,16 +569,22 @@ body:hover #ui,#ui:focus-within{opacity:1}
   function countUp(sl){[].forEach.call(sl.querySelectorAll('[data-count]'),function(el){
     var end=+el.dataset.count,t0=null;function step(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/1600);el.textContent=Math.round(end*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(step);}
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent='0';setTimeout(function(){requestAnimationFrame(step)},500);} });}
-  function go(n){
+  function stepsOf(sl){return +(sl.dataset.steps||0)}
+  function playIn(sl,k){[].forEach.call(sl.querySelectorAll('video'),function(v){var h=v.closest('[data-step]');if(h&&+h.dataset.step>k)return;if(!v.paused)return;try{var p=v.play();if(p)p.catch(function(){})}catch(e){}});}
+  function setStep(sl,k){sl.dataset.cur=k;for(var i=1;i<=6;i++)sl.classList.toggle('st'+i,i<=k);playIn(sl,k);}
+  function go(n,full){
     n=Math.max(0,Math.min(slides.length-1,n));if(n===cur&&slides[n].classList.contains('on'))return;
     slides[cur].classList.remove('on');[].forEach.call(slides[cur].querySelectorAll('video'),function(v){v.pause()});
-    cur=n;var s=slides[cur];void s.offsetWidth;s.classList.add('on');
-    [].forEach.call(s.querySelectorAll('video'),function(v){try{v.currentTime=0;var p=v.play();if(p)p.catch(function(){})}catch(e){}});
+    cur=n;var s=slides[cur];
+    [].forEach.call(s.querySelectorAll('video'),function(v){try{v.pause();v.currentTime=0}catch(e){}});
+    setStep(s,full?stepsOf(s):0);void s.offsetWidth;s.classList.add('on');playIn(s,+s.dataset.cur);
     countUp(s);count.textContent=(cur+1)+' / '+slides.length;bar.style.width=((cur+1)/slides.length*100)+'%';
   }
+  function next(){var s=slides[cur],k=+(s.dataset.cur||0);if(k<stepsOf(s))setStep(s,k+1);else go(cur+1);}
+  function prev(){var s=slides[cur],k=+(s.dataset.cur||0);if(k>0)setStep(s,k-1);else go(cur-1,true);}
   bar.style.width=(100/slides.length)+'%';
-  document.getElementById('next').onclick=function(){go(cur+1)};
-  document.getElementById('prev').onclick=function(){go(cur-1)};
+  document.getElementById('next').onclick=function(){next()};
+  document.getElementById('prev').onclick=function(){prev()};
   document.getElementById('fs').onclick=function(){var el=document.documentElement;try{
     if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document);return;}
     var req=el.requestFullscreen||el.webkitRequestFullscreen,p=req&&req.call(el,{navigationUI:'hide'});
@@ -545,17 +592,17 @@ body:hover #ui,#ui:focus-within{opacity:1}
     if(p&&p.then)p.then(lock).catch(function(){});else lock();
   }catch(e){}};
   document.addEventListener('keydown',function(e){
-    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
-    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
+    if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();next()}
+    else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();prev()}
     else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
     else if(e.key==='f'||e.key==='F')document.getElementById('fs').click();
   });
-  document.getElementById('viewport').addEventListener('click',function(e){go(e.clientX>window.innerWidth/3?cur+1:cur-1)});
+  document.getElementById('viewport').addEventListener('click',function(e){if(e.clientX>window.innerWidth/3)next();else prev()});
   var x0=null;document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
-  document.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(dx<0?cur+1:cur-1);x0=null},{passive:true});
+  document.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40){if(dx<0)next();else prev()};x0=null},{passive:true});
   // vídeo ausente: mantém a foto de capa (poster) parada
   
-  countUp(slides[0]);
+  setStep(slides[0],0);countUp(slides[0]);
 })();
 </script>
 </body>
