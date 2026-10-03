@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manual do Patrocinador</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+/* Manual em páginas 16:9 (1600x900), no formato do manual de 2019; na tela as páginas são escaladas, na impressão saem em tamanho real. */
+:root{
+  --ink:#0b0b0b;
+  --paper:#ffffff;
+  --stone:#ecebe8;
+  --mute:#77736d;
+  --body:#3b3935;
+  --wood:#9a6d4b;
+  --line:rgba(11,11,11,.14);
+  --serif:"Bodoni Moda","Bodoni MT","Didot",Georgia,serif;
+  --sans:"Jost","Futura","Century Gothic","Helvetica Neue",Arial,sans-serif;
+  --s:1;
+  color-scheme:dark;
+}
+@page{size:1600px 900px;margin:0}
+html,body{margin:0}
+body{background:#1a1a1a;color:var(--ink);font-family:var(--sans);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+*{box-sizing:border-box}
+
+/* barra de ações */
+#bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px max(16px,env(safe-area-inset-left));background:rgba(11,11,11,.92);backdrop-filter:blur(8px);color:#fff}
+#bar .t{font:400 12px/1.2 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bar .acts{display:flex;gap:8px;flex:none}
+#bar a,#bar button{all:unset;cursor:pointer;font:400 13px/1 var(--sans);letter-spacing:.12em;padding:11px 16px;border-radius:999px;background:rgba(255,255,255,.12);color:#fff;white-space:nowrap}
+#bar a.primary{background:#fff;color:var(--ink)}
+#bar a:focus-visible,#bar button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* páginas */
+#doc{display:flex;flex-direction:column;align-items:center;gap:calc(28px * var(--s) + 8px);padding:24px 16px 48px}
+.frame{width:calc(1600px * var(--s));height:calc(900px * var(--s));flex:none;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+.page{position:relative;width:1600px;height:900px;overflow:hidden;background:var(--paper);transform:scale(var(--s));transform-origin:top left}
+.dark{background:var(--ink);color:var(--paper)}
+.stone{background:var(--stone)}
+
+/* tipografia */
+.eyebrow{font:400 15px/1 var(--sans);letter-spacing:.32em;text-transform:uppercase;color:var(--mute)}
+.dark .eyebrow{color:rgba(255,255,255,.62)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1{font-size:84px;line-height:1.02}
+h2{font-size:58px;line-height:1.06}
+h3{font-size:30px;line-height:1.15}
+p{margin:0;font-weight:300;font-size:20px;line-height:1.55;color:var(--body)}
+.dark p{color:rgba(255,255,255,.78)}
+.small{font-size:14px;line-height:1.5;color:var(--mute);font-weight:400}
+.dark .small{color:rgba(255,255,255,.55)}
+.num{font-family:var(--serif);font-variant-numeric:lining-nums tabular-nums}
+em{font-style:italic}
+ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;font-weight:300;line-height:1.4;color:var(--body)}
+.dark ul.list{color:rgba(255,255,255,.8)}
+
+.ph{position:absolute;overflow:hidden;background:#222}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.rel{position:relative}
+.bg{position:absolute;inset:0}
+.bg img{width:100%;height:100%;object-fit:cover;display:block}
+.shade{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.tag{position:absolute;font:400 11px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;background:rgba(0,0,0,.6);color:#fff;padding:9px 12px}
+.pad{position:absolute;inset:88px 104px}
+.mark{position:absolute;right:56px;bottom:40px;width:64px;opacity:.9}
+.pn{position:absolute;left:104px;bottom:40px;font:400 13px/1 var(--sans);letter-spacing:.24em;color:var(--mute)}
+.dark .pn{color:rgba(255,255,255,.45)}
+.box{border:1px solid var(--line)}
+.dark .box{border-color:rgba(255,255,255,.22)}
+
+@media print{
+  body{background:none}
+  #bar{display:none}
+  #doc{display:block;padding:0}
+  .frame{width:1600px;height:900px;box-shadow:none;break-after:page;page-break-after:always}
+  .frame:last-child{break-after:auto;page-break-after:auto}
+  .page{transform:none}
+}
+</style>
+</head>
+<body>
+
+<div id="bar">
+  <div class="t">Bhe · Manual do Patrocinador · Casa Bhe</div>
+  <div class="acts">
+    <a class="primary" href="manual-patrocinador.pdf" download="Bhe-Manual-do-Patrocinador.pdf">Baixar PDF</a>
+    <button type="button" id="print">Imprimir</button>
+  </div>
+</div>
+
+<main id="doc">
+
+<!-- 1 · CAPA -->
+<div class="frame"><section class="page dark">
+  <div class="bg"><img src="img/proj-vitrine-marcas.jpg" alt="Vitrine de marcas da Casa Bhe"></div>
+  <div class="shade"></div>
+  <div style="position:absolute;left:104px;top:120px">
+    <img src="img/logo-branca.png" alt="Bhe. Beauty House Experience" style="width:240px;display:block">
+  </div>
+  <div style="position:absolute;left:104px;bottom:110px;width:900px">
+    <div class="eyebrow" style="color:rgba(255,255,255,.75)">Casa Bhe · Rio de Janeiro · 2026</div>
+    <h1 style="margin-top:26px;color:#fff">Manual do <em>Patrocinador</em></h1>
+  </div>
+  <div class="small" style="position:absolute;right:104px;bottom:110px;text-align:right">Imagem ilustrativa do projeto<br>de ambientação da casa.</div>
+</section></div>
+
+<!-- 2 · HISTÓRIA -->
+<div class="frame"><section class="page">
+  <div class="ph" style="left:0;top:0;width:700px;height:900px"><img src="img/hist-mansao-joa.jpg" alt="Mansão no Joá, sede da primeira edição da Bhe"></div>
+  <div class="tag" style="left:32px;bottom:32px">Mansão no Joá · 2019</div>
+  <div style="position:absolute;left:780px;top:96px;width:716px">
+    <div class="eyebrow">Nossa história</div>
+    <h2 style="margin-top:26px">Desde 2019, a maior experiência de beleza do país.</h2>
+    <p style="margin-top:28px">Em 2019, a Beauty House Experience reuniu profissionais da beleza de todo o Brasil numa mansão no Joá, no Rio de Janeiro. Foram três dias de imersão com técnica, conteúdo, entretenimento e troca com os profissionais mais renomados do mercado.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:44px">
+      <div style="border-top:1px solid var(--line);padding-top:20px"><div class="num" style="font-size:56px;line-height:1">3</div><div class="small" style="margin-top:10px">dias de imersão</div></div>
+      <div style="border-top:1px solid var(--line);padding-top:20px"><div class="num" style="font-size:56px;line-height:1">80</div><div class="small" style="margin-top:10px">vagas, todas preenchidas antes do evento</div></div>
+      <div style="border-top:1px solid var(--line);padding-top:20px"><div class="num" style="font-size:56px;line-height:1">11</div><div class="small" style="margin-top:10px">embaixadores de Wella, L'Oréal e Braé</div></div>
+    </div>
+    <p style="margin-top:44px;font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink)">“O Rio de Janeiro tem um mercado crescente nesta área. Nossa proposta é oferecer, além de conhecimento, uma experiência única no mercado beauty.”</p>
+    <div class="small" style="margin-top:12px">Ueliton Souza, sócio e criador da Bhe</div>
+  </div>
+</section></div>
+
+<!-- 3 · TIME 2019 -->
+<div class="frame"><section class="page dark">
+  <div class="pad">
+    <div class="eyebrow">Time 2019</div>
+    <h2 style="margin-top:26px">Os embaixadores da primeira edição</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:56px;margin-top:64px">
+      <div style="border-top:1px solid rgba(255,255,255,.25);padding-top:28px">
+        <div class="eyebrow">Embaixadores</div>
+        <h3 style="margin-top:14px;font-size:40px">Wella</h3>
+        <ul class="list" style="margin-top:30px;font-family:var(--serif);font-size:30px;gap:14px;color:#fff"><li>Anderson Couto</li><li>Jackson Nunes</li><li>Renato Fuzz</li></ul>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,.25);padding-top:28px">
+        <div class="eyebrow">Embaixadores</div>
+        <h3 style="margin-top:14px;font-size:40px">L'Oréal</h3>
+        <ul class="list" style="margin-top:30px;font-family:var(--serif);font-size:30px;gap:14px;color:#fff"><li>Costatto</li><li>Vivi Siqueira</li><li>Fil Freitas</li><li>Brunna Fabricio</li></ul>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,.25);padding-top:28px">
+        <div class="eyebrow">Embaixadores</div>
+        <h3 style="margin-top:14px;font-size:40px">Braé Hair Care</h3>
+        <ul class="list" style="margin-top:30px;font-family:var(--serif);font-size:30px;gap:14px;color:#fff"><li>Felipe Lobeu</li><li>Natan Correia</li><li>Danilo Herbert</li><li>Philipe Douglas</li></ul>
+      </div>
+    </div>
+    <p style="margin-top:64px;max-width:1150px;font-size:21px">Temas da edição: posicionamento profissional, planejamento de carreira e redes sociais como ferramenta de trabalho, além de técnicas de corte, cor e finalização.</p>
+  </div>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section></div>
+
+<!-- 4 · EXPERIÊNCIA E MARCAS -->
+<div class="frame"><section class="page">
+  <div class="ph" style="left:0;top:0;width:520px;height:440px"><img src="img/hist-workshop-palco.jpg" alt="Workshop de corte no palco"></div>
+  <div class="ph" style="left:540px;top:0;width:520px;height:440px"><img src="img/hist-publico.jpg" alt="Desfile com marcas patrocinadoras em cena"></div>
+  <div class="ph" style="left:1080px;top:0;width:520px;height:440px"><img src="img/hist-lancha.jpg" alt="Passeio de lancha do Dia Bhe 360"></div>
+  <div class="tag" style="left:24px;top:400px">Workshops</div>
+  <div class="tag" style="left:564px;top:400px">Desfile</div>
+  <div class="tag" style="left:1104px;top:400px">Dia Bhe 360</div>
+  <div style="position:absolute;left:104px;top:500px;width:640px">
+    <div class="eyebrow">Experiência Bhe</div>
+    <h2 style="margin-top:22px;font-size:50px">Conhecimento e entretenimento com as marcas em cena</h2>
+    <p style="margin-top:22px;font-size:18px">Workshops, talk show, desfile, voo panorâmico, passeio de barco, jet ski e luau. Os patrocinadores estiveram presentes com produtos, cenários e suporte em toda a programação.</p>
+  </div>
+  <div style="position:absolute;left:840px;top:500px;width:656px">
+    <div class="eyebrow">Patrocinadores 2019</div>
+    <div style="margin-top:18px;font-family:var(--serif);font-size:38px;line-height:1.25">Wella · L'Oréal · Braé Hair Care</div>
+    <div class="eyebrow" style="margin-top:40px">Parceiros 2019</div>
+    <p style="margin-top:14px;font-size:18px">Suprir Beauty Solutions, Beleza na Web, Espaço Workshops, Beauty Class, AVEC, GAMA Italy e BMW Autokraft.</p>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section></div>
+
+<!-- 5 · DO EVENTO À CASA -->
+<div class="frame"><section class="page stone">
+  <div class="pad">
+    <div class="eyebrow">A nova fase</div>
+    <h2 style="margin-top:26px;max-width:1100px">Do evento de três dias para uma casa aberta o ano inteiro</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:64px">
+      <div style="background:var(--paper);padding:44px 48px">
+        <div class="eyebrow">Bhe 2019 · Evento</div>
+        <div class="num" style="font-size:72px;line-height:1;margin-top:24px">3 dias</div>
+        <ul class="list" style="margin-top:30px;border-top:1px solid var(--line);padding-top:24px">
+          <li>Imersão para 80 profissionais</li>
+          <li>Programação com data marcada</li>
+          <li>A marca aparece durante o evento</li>
+        </ul>
+      </div>
+      <div style="background:var(--ink);color:#fff;padding:44px 48px">
+        <div class="eyebrow" style="color:rgba(255,255,255,.62)">Casa Bhe · 2026</div>
+        <div class="num" style="font-size:72px;line-height:1;margin-top:24px">12 meses</div>
+        <ul class="list" style="margin-top:30px;border-top:1px solid rgba(255,255,255,.22);padding-top:24px;color:rgba(255,255,255,.82)">
+          <li>Hub de live commerce, conteúdo, cursos e eventos</li>
+          <li>Programação contínua, todas as semanas</li>
+          <li>A marca vive dentro da casa o ano todo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section></div>
+
+<!-- 6 · O MOMENTO -->
+<div class="frame"><section class="page dark">
+  <div class="pad">
+    <div class="eyebrow">O momento</div>
+    <h2 style="margin-top:26px;max-width:1100px">O comércio ao vivo explodiu no Brasil, e beleza lidera o D2C.</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:64px;margin-top:90px">
+      <div style="border-top:1px solid rgba(255,255,255,.25);padding-top:30px"><div class="num" style="font-size:84px;line-height:1">161x</div><p style="margin-top:20px;font-size:18px">crescimento do GMV médio diário de lives no TikTok Shop, entre maio de 2025 e maio de 2026</p></div>
+      <div style="border-top:1px solid rgba(255,255,255,.25);padding-top:30px"><div class="num" style="font-size:84px;line-height:1;white-space:nowrap">R$ 791 mi</div><p style="margin-top:20px;font-size:18px">em saúde e beleza D2C em 2025, alta de 44%, uma das categorias mais dinâmicas</p></div>
+      <div style="border-top:1px solid rgba(255,255,255,.25);padding-top:30px"><div class="num" style="font-size:84px;line-height:1;white-space:nowrap">R$ 6,5 bi</div><p style="margin-top:20px;font-size:18px">movimentados pelo D2C brasileiro em 2025, alta de 35%</p></div>
+    </div>
+  </div>
+  <div class="small" style="position:absolute;left:104px;bottom:40px">Fontes: TikTok Newsroom; Nuvemshop Radar D2C e NuvemCommerce 2026.</div>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section></div>
+
+<!-- 7 · SUA MARCA EM MOVIMENTO -->
+<div class="frame"><section class="page dark">
+  <div class="bg"><img src="img/proj-estudio-live.jpg" alt=""></div>
+  <div class="shade" style="background:rgba(0,0,0,.66)"></div>
+  <div style="position:absolute;left:104px;top:150px;width:660px">
+    <div class="eyebrow">Sua marca em movimento</div>
+    <h2 style="margin-top:26px;color:#fff">Movimentar sua marca no dia a dia do profissional e do consumidor.</h2>
+    <p style="margin-top:30px">Na Casa Bhe, a marca deixa de aparecer só em um fim de semana e passa a fazer parte da rotina de conteúdo, venda e formação da casa.</p>
+  </div>
+  <div class="box" style="position:absolute;left:900px;top:150px;width:596px;padding:44px 48px">
+    <div class="eyebrow">Principais objetivos</div>
+    <ul class="list" style="margin-top:28px;font-size:21px;gap:16px">
+      <li>Apresentar as novas tendências do mercado</li>
+      <li>Conhecimento e formação profissional</li>
+      <li>Conteúdo para redes e plataformas</li>
+      <li>Venda ao vivo</li>
+      <li>Relacionamento e rodada de negócios</li>
+      <li>Experiência, luxo e exclusividade</li>
+    </ul>
+  </div>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section></div>
+
+<!-- 8 · A CASA -->
+<div class="frame"><section class="page">
+  <div class="ph" style="left:0;top:0;width:800px;height:900px"><img src="img/proj-vitrine-marcas.jpg" alt="Vitrine de marcas"></div>
+  <div class="ph" style="left:824px;top:0;width:376px;height:212px"><img src="img/proj-estudio-live.jpg" alt="Estúdio de lives"></div>
+  <div class="ph" style="left:1224px;top:0;width:376px;height:212px"><img src="img/proj-estudio-entrevista.jpg" alt="Estúdio de entrevistas"></div>
+  <div class="ph" style="left:824px;top:236px;width:376px;height:212px"><img src="img/proj-sala-cursos.jpg" alt="Sala de cursos"></div>
+  <div class="ph" style="left:1224px;top:236px;width:376px;height:212px"><img src="img/proj-piscina-eventos.jpg" alt="Área de eventos"></div>
+  <div class="tag" style="left:24px;bottom:24px">Vitrine de marcas</div>
+  <div style="position:absolute;left:880px;top:510px;width:620px">
+    <div class="eyebrow">A Casa Bhe</div>
+    <h2 style="margin-top:22px;font-size:52px">Cada ambiente com uma função</h2>
+    <p style="margin-top:20px;font-size:18px">Vitrine de marcas, estúdio de lives, estúdio de entrevistas, sala de cursos e área de eventos na piscina, numa casa no Rio de Janeiro.</p>
+    <div class="small" style="margin-top:20px">Imagens ilustrativas do projeto de ambientação da casa.</div>
+  </div>
+</section></div>
+
+<!-- 9 · PROGRAMAÇÃO -->
+<div class="frame"><section class="page">
+  <div class="ph" style="left:0;top:0;width:480px;height:900px"><img src="img/hist-transformacao.jpg" alt="Demonstração de coloração ao vivo" style="object-position:55% 50%"></div>
+  <div style="position:absolute;left:560px;top:88px;right:104px">
+    <div class="eyebrow">Programação contínua</div>
+    <h2 style="margin-top:22px">Uma agenda que não para</h2>
+    <div id="grid" style="margin-top:36px"></div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section></div>
+
+<!-- 10 · CANAIS -->
+<div class="frame"><section class="page dark">
+  <div class="bg"><img src="img/hist-piscina.jpg" alt=""></div>
+  <div class="shade" style="background:rgba(0,0,0,.7)"></div>
+  <div class="pad">
+    <div class="eyebrow">Canais de comunicação</div>
+    <h2 style="margin-top:26px;color:#fff">Um conteúdo, muitos canais</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:56px">
+      <div style="font-family:var(--serif);font-size:52px;line-height:1.28;color:#fff">
+        <div>TikTok Shop</div><div>Shopee</div><div>Mercado Livre</div><div>YouTube</div><div>Instagram</div><div><em>Canais próprios</em></div>
+      </div>
+      <div style="padding-top:12px">
+        <div class="eyebrow">Quem apresenta</div>
+        <ul class="list" style="margin-top:24px;gap:22px">
+          <li><span style="font-family:var(--serif);font-size:26px;color:#fff">Fundadores</span><br>autoridade, recorrência e relacionamento</li>
+          <li><span style="font-family:var(--serif);font-size:26px;color:#fff">Microinfluenciadores</span><br>frequência, nichos e teste de formatos</li>
+          <li><span style="font-family:var(--serif);font-size:26px;color:#fff">Grandes influenciadores</span><br>picos de alcance em lançamentos e campanhas</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-branca.png" alt="">
+</section></div>
+
+<!-- 11 · CONTRAPARTIDAS -->
+<div class="frame"><section class="page stone">
+  <div class="pad">
+    <div class="eyebrow">Cota de patrocínio · Contrapartidas</div>
+    <h2 style="margin-top:26px">O que a sua marca recebe</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:52px">
+      <div><div class="ph rel" style="height:300px"><img src="img/proj-vitrine-marcas.jpg" alt=""></div><div class="eyebrow" style="margin-top:24px">01</div><h3 style="margin-top:12px">Espaço exclusivo na casa</h3><p style="margin-top:10px;font-size:18px">Um ambiente dedicado à marca dentro da Bhe, com os seus produtos em exposição permanente.</p></div>
+      <div><div class="ph rel" style="height:300px"><img src="img/proj-estudio-live.jpg" alt=""></div><div class="eyebrow" style="margin-top:24px">02</div><h3 style="margin-top:12px">Presença nas lives</h3><p style="margin-top:10px;font-size:18px">A marca aparece nas transmissões ao vivo da casa, nos canais em que a Bhe está presente.</p></div>
+      <div><div class="ph rel" style="height:300px"><img src="img/proj-sala-cursos.jpg" alt=""></div><div class="eyebrow" style="margin-top:24px">03</div><h3 style="margin-top:12px">Um curso educacional por mês</h3><p style="margin-top:10px;font-size:18px">Todo mês, um curso na sala de cursos da casa com a participação da marca.</p></div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section></div>
+
+<!-- 12 · INVESTIMENTO -->
+<div class="frame"><section class="page">
+  <div class="pad">
+    <div class="eyebrow">Cota de patrocínio · Investimento</div>
+    <h2 style="margin-top:26px">Cota anual Casa Bhe</h2>
+    <p style="margin-top:18px">Duas formas de pagamento para 12 meses de patrocínio, com as mesmas contrapartidas.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:52px">
+      <div class="box" style="padding:48px 52px 52px">
+        <div class="eyebrow">Opção 1 · Mensal</div>
+        <div class="num" style="font-size:96px;line-height:1;margin-top:30px;white-space:nowrap">R$ 120 mil</div>
+        <div style="margin-top:36px;border-top:1px solid var(--line);padding-top:26px;display:grid;grid-template-columns:1fr auto;row-gap:14px;font-size:20px;font-weight:300">
+          <span>Parcelas</span><span class="num" style="font-size:24px">12 × R$ 10 mil</span>
+          <span>Pagamento</span><span>mensal, durante 1 ano</span>
+        </div>
+      </div>
+      <div style="background:var(--ink);color:#fff;padding:48px 52px 52px">
+        <div class="eyebrow" style="color:rgba(255,255,255,.62)">Opção 2 · Antecipado</div>
+        <div class="num" style="font-size:96px;line-height:1;margin-top:30px;white-space:nowrap">R$ 100 mil</div>
+        <div style="margin-top:36px;border-top:1px solid rgba(255,255,255,.25);padding-top:26px;display:grid;grid-template-columns:1fr auto;row-gap:14px;font-size:20px;font-weight:300">
+          <span>Parcelas</span><span>à vista ou em até 3 vezes</span>
+          <span>Economia</span><span class="num" style="font-size:24px">R$ 20 mil</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="mark" src="img/logo-preta.png" alt="">
+</section></div>
+
+<!-- 13 · OBRIGADO -->
+<div class="frame"><section class="page dark">
+  <div class="bg"><img src="img/proj-estudio-entrevista.jpg" alt=""></div>
+  <div class="shade" style="background:rgba(0,0,0,.64)"></div>
+  <img src="img/logo-circulo-preto.png" alt="Bhe." style="position:absolute;left:220px;top:270px;width:360px;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.25)">
+  <div style="position:absolute;left:760px;top:250px;width:740px">
+    <div class="eyebrow">Obrigado</div>
+    <h1 style="margin-top:28px;font-size:68px;color:#fff">Sua marca dentro da Casa Bhe.</h1>
+    <div style="margin-top:48px;display:grid;grid-template-columns:200px 1fr;row-gap:18px;font-size:20px;font-weight:300">
+      <div class="eyebrow" style="padding-top:4px">Instagram</div><div>@beautyhouseexperience</div>
+      <div class="eyebrow" style="padding-top:4px">Apresentação</div><div>wcjesuino.github.io/casa-bhe</div>
+    </div>
+  </div>
+</section></div>
+
+</main>
+
+<script>
+(function(){
+  var grid=[['Seg a sex · 12h–14h','Micro-live e demonstração','Produto em uso, consumo na hora do almoço'],
+            ['Seg a sex · 18h–20h','Rotina e transformação','Público pós-trabalho, antes e depois'],
+            ['Seg a sex · 20h–22h','Live âncora','Maior janela de entretenimento e vendas'],
+            ['Sábados','Evento + live','Experiência presencial que vira conteúdo'],
+            ['Uma vez por mês','Curso educacional','Formação com marcas parceiras na sala de cursos']];
+  var g=document.getElementById('grid');
+  grid.forEach(function(r){
+    var w=document.createElement('div');
+    w.style.cssText='display:grid;grid-template-columns:250px 1fr;gap:28px;padding:22px 0;border-top:1px solid var(--line)';
+    w.innerHTML='<div class="eyebrow" style="font-size:13px;padding-top:8px;color:var(--ink)">'+r[0]+'</div><div><div style="font-family:var(--serif);font-size:28px">'+r[1]+'</div><div class="small" style="margin-top:6px;font-size:16px">'+r[2]+'</div></div>';
+    g.appendChild(w);
+  });
+
+  // escala as páginas para caber na largura da tela
+  var root=document.documentElement;
+  function fit(){var s=Math.min(1,(window.innerWidth-32)/1600);root.style.setProperty('--s',s.toFixed(4));}
+  window.addEventListener('resize',fit);fit();
+  window.addEventListener('beforeprint',function(){root.style.setProperty('--s','1')});
+  window.addEventListener('afterprint',fit);
+  document.getElementById('print').onclick=function(){window.print()};
+})();
+</script>
+</body>
+</html>
