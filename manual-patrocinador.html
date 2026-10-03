@@ -7,7 +7,7 @@
 <title>Manual do Patrocinador</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
-/* Manual em páginas 16:9 (1600x900), no formato do manual de 2019; na tela as páginas são escaladas, na impressão saem em tamanho real. */
+/* Manual em páginas 16:9 (1600x900), no formato do manual de 2019; na tela as páginas são escaladas e na impressão saem em 1280x720 (960x540 pt, o tamanho dos PDFs de 2019). */
 :root{
   --ink:#0b0b0b;
   --paper:#ffffff;
@@ -21,7 +21,7 @@
   --s:1;
   color-scheme:dark;
 }
-@page{size:1600px 900px;margin:0}
+@page{size:1280px 720px;margin:0}
 html,body{margin:0}
 body{background:#1a1a1a;color:var(--ink);font-family:var(--sans);-webkit-print-color-adjust:exact;print-color-adjust:exact}
 *{box-sizing:border-box}
@@ -75,9 +75,9 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
   body{background:none}
   #bar{display:none}
   #doc{display:block;padding:0}
-  .frame{width:1600px;height:900px;box-shadow:none;break-after:page;page-break-after:always}
+  .frame{width:1280px;height:720px;overflow:hidden;box-shadow:none;break-after:page;page-break-after:always}
   .frame:last-child{break-after:auto;page-break-after:auto}
-  .page{transform:none}
+  .page{transform:scale(.8)}
 }
 </style>
 </head>
@@ -339,13 +339,9 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
   <div class="bg"><img src="img/proj-estudio-entrevista.jpg" alt=""></div>
   <div class="shade" style="background:rgba(0,0,0,.64)"></div>
   <img src="img/logo-circulo-preto.png" alt="Bhe." style="position:absolute;left:220px;top:270px;width:360px;border-radius:50%;box-shadow:0 0 0 1px rgba(255,255,255,.25)">
-  <div style="position:absolute;left:760px;top:250px;width:740px">
+  <div style="position:absolute;left:760px;top:330px;width:740px">
     <div class="eyebrow">Obrigado</div>
     <h1 style="margin-top:28px;font-size:68px;color:#fff">Sua marca dentro da Casa Bhe.</h1>
-    <div style="margin-top:48px;display:grid;grid-template-columns:200px 1fr;row-gap:18px;font-size:20px;font-weight:300">
-      <div class="eyebrow" style="padding-top:4px">Instagram</div><div>@beautyhouseexperience</div>
-      <div class="eyebrow" style="padding-top:4px">Apresentação</div><div>wcjesuino.github.io/casa-bhe</div>
-    </div>
   </div>
 </section></div>
 
@@ -370,7 +366,7 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
   var root=document.documentElement;
   function fit(){var s=Math.min(1,(window.innerWidth-32)/1600);root.style.setProperty('--s',s.toFixed(4));}
   window.addEventListener('resize',fit);fit();
-  window.addEventListener('beforeprint',function(){root.style.setProperty('--s','1')});
+  window.addEventListener('beforeprint',function(){root.style.setProperty('--s','.8')});
   window.addEventListener('afterprint',fit);
   document.getElementById('print').onclick=function(){window.print()};
 })();
