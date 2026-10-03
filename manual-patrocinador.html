@@ -79,6 +79,13 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
   .frame:last-child{break-after:auto;page-break-after:auto}
   .page{transform:scale(.8)}
 }
+.playbtn{all:unset;cursor:pointer;font:400 15px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:#fff;padding:16px 24px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.playbtn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+#player{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:max(16px,4vh) 16px}
+#player.open{display:flex}
+#player video{width:min(1280px,100%,calc((100vh - 8vh) * 16 / 9));aspect-ratio:16/9;height:auto;background:#000}
+#player .close{all:unset;cursor:pointer;position:absolute;top:max(14px,env(safe-area-inset-top));right:16px;color:#fff;font:400 13px/1 var(--sans);letter-spacing:.14em;background:rgba(255,255,255,.14);padding:10px 14px;border-radius:999px}
+@media print{.playbtn,#player{display:none!important}}
 </style>
 </head>
 <body>
@@ -122,6 +129,11 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
     </div>
     <p style="margin-top:44px;font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink)">“O Rio de Janeiro tem um mercado crescente nesta área. Nossa proposta é oferecer, além de conhecimento, uma experiência única no mercado beauty.”</p>
     <div class="small" style="margin-top:12px">Ueliton Souza, sócio e criador da Bhe</div>
+    <div style="margin-top:40px;display:flex;align-items:center;gap:40px">
+      <img src="img/logo-wella.png" alt="Wella Professionals" style="height:70px">
+      <img src="img/logo-loreal.png" alt="L'Oréal" style="height:27px">
+      <img src="img/logo-brae.png" alt="Braé" style="height:22px">
+    </div>
   </div>
 </section></div>
 
@@ -159,7 +171,7 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
   </div>
   <div style="position:absolute;left:840px;top:500px;width:656px">
     <div class="eyebrow">Patrocinadores 2019</div>
-    <div style="margin-top:18px;font-family:var(--serif);font-size:38px;line-height:1.25">Wella · L'Oréal · Braé Hair Care</div>
+    <div style="margin-top:22px;display:flex;align-items:center;gap:44px"><img src="img/logo-wella.png" alt="Wella Professionals" style="height:78px"><img src="img/logo-loreal.png" alt="L'Oréal" style="height:30px"><img src="img/logo-brae.png" alt="Braé Hair Care" style="height:24px"></div>
     <div class="eyebrow" style="margin-top:40px">Parceiros 2019</div>
     <p style="margin-top:14px;font-size:18px">Suprir Beauty Solutions, Beleza na Web, Espaço Workshops, Beauty Class, AVEC, GAMA Italy e BMW Autokraft.</p>
   </div>
@@ -169,13 +181,14 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
 <!-- 4b · DESAFIOS NA ILHA -->
 <div class="frame"><section class="page dark">
   <div class="ph" style="left:0;top:0;width:1600px;height:400px"><img src="img/ilha-aerea.jpg" alt="Ilha em Angra dos Reis onde aconteceu o Desafios na Ilha"></div>
-  <div style="position:absolute;left:104px;top:470px;width:640px">
-    <div class="eyebrow">Desafios na Ilha · Angra dos Reis</div>
-    <h2 style="margin-top:24px;font-size:54px;color:#fff">Um reality da beleza numa ilha</h2>
-    <p style="margin-top:24px;font-size:19px">Os maiores profissionais do mercado reunidos por três dias numa ilha em Angra dos Reis, com embaixadores de grandes marcas ensinando técnicas ao vivo.</p>
+  <button type="button" class="playbtn" data-video="videos/desafios-na-ilha-2020.mp4" style="position:absolute;right:104px;top:330px">▶&nbsp;&nbsp;Assistir ao vídeo</button>
+  <div style="position:absolute;left:104px;top:450px;width:660px">
+    <div class="eyebrow">Desafios na Ilha · Angra dos Reis · 2020</div>
+    <h2 style="margin-top:22px;font-size:52px;color:#fff">Um reality da beleza numa ilha</h2>
+    <p style="margin-top:22px;font-size:18px">De 31 de janeiro a 2 de fevereiro, 16 dos maiores profissionais do Brasil, embaixadores de Wella, L'Oréal, Braé, Keune e Aneethun, passaram três dias numa ilha em Angra dos Reis ensinando ao vivo: criatividade, gestão de carreira, corte e cor.</p>
   </div>
-  <div class="ph" style="left:824px;top:470px;width:672px;height:259px"><img src="img/ilha-time.jpg" alt="Profissionais do Desafios na Ilha"></div>
-  <div class="eyebrow" style="position:absolute;left:824px;top:750px;font-size:11px">O time do Desafios na Ilha</div>
+  <div class="ph" style="left:824px;top:450px;width:672px;height:259px"><img src="img/ilha-time.jpg" alt="Profissionais do Desafios na Ilha"></div>
+  <div class="small" style="position:absolute;left:824px;top:726px;width:672px;font-size:13px">Entre eles, Felipe Lobeu, Brunna Fabricio, Tiago Aprigio, Ricky Moica, Suellen Azevedo, Chris Rodrigues e Washington Nunnes.</div>
   <img class="mark" src="img/logo-branca.png" alt="">
 </section></div>
 
@@ -362,6 +375,7 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
 </section></div>
 
 </main>
+<div id="player" role="dialog" aria-label="Vídeo"><button type="button" class="close" aria-label="Fechar vídeo">Fechar ✕</button><video controls playsinline preload="none" poster="img/poster-desafios-na-ilha-2020.jpg"></video></div>
 
 <script>
 (function(){
@@ -385,6 +399,12 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
   window.addEventListener('beforeprint',function(){root.style.setProperty('--s','.8')});
   window.addEventListener('afterprint',fit);
   document.getElementById('print').onclick=function(){window.print()};
+  var player=document.getElementById('player'),pv=player.querySelector('video');
+  function closePlayer(){pv.pause();player.classList.remove('open');}
+  [].forEach.call(document.querySelectorAll('.playbtn'),function(b){b.addEventListener('click',function(){if(pv.dataset.cur!==b.dataset.video){pv.dataset.cur=b.dataset.video;pv.innerHTML='<source src="'+b.dataset.video+'" type="video/mp4"><source src="'+b.dataset.video.replace(/\.mp4$/,'.webm')+'" type="video/webm">';pv.load();}player.classList.add('open');try{var p=pv.play();if(p)p.catch(function(){})}catch(err){}});});
+  player.querySelector('.close').onclick=closePlayer;
+  player.addEventListener('click',function(e){if(e.target===player)closePlayer();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&player.classList.contains('open'))closePlayer();});
 })();
 </script>
 </body>
