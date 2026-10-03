@@ -18,7 +18,7 @@
   --line:rgba(11,11,11,.14);
   --serif:"Bodoni Moda","Bodoni MT","Didot",Georgia,serif;
   --sans:"Jost","Futura","Century Gothic","Helvetica Neue",Arial,sans-serif;
-  --s:1;
+  --s:.2;  /* começa pequeno para o celular não alargar a página antes do ajuste */
   color-scheme:dark;
 }
 @page{size:1280px 720px;margin:0}
@@ -36,7 +36,7 @@ body{background:#1a1a1a;color:var(--ink);font-family:var(--sans);-webkit-print-c
 
 /* páginas */
 #doc{display:flex;flex-direction:column;align-items:center;gap:calc(28px * var(--s) + 8px);padding:24px 16px 48px}
-.frame{width:calc(1600px * var(--s));height:calc(900px * var(--s));flex:none;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+.frame{width:calc(1600px * var(--s));height:calc(900px * var(--s));flex:none;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.45)}
 .page{position:relative;width:1600px;height:900px;overflow:hidden;background:var(--paper);transform:scale(var(--s));transform-origin:top left}
 .dark{background:var(--ink);color:var(--paper)}
 .stone{background:var(--stone)}
@@ -79,13 +79,6 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
   .frame:last-child{break-after:auto;page-break-after:auto}
   .page{transform:scale(.8)}
 }
-.playbtn{all:unset;cursor:pointer;font:400 15px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:#fff;padding:16px 24px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.playbtn:focus-visible{outline:2px solid #fff;outline-offset:3px}
-#player{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:max(16px,4vh) 16px}
-#player.open{display:flex}
-#player video{width:min(1280px,100%,calc((100vh - 8vh) * 16 / 9));aspect-ratio:16/9;height:auto;background:#000}
-#player .close{all:unset;cursor:pointer;position:absolute;top:max(14px,env(safe-area-inset-top));right:16px;color:#fff;font:400 13px/1 var(--sans);letter-spacing:.14em;background:rgba(255,255,255,.14);padding:10px 14px;border-radius:999px}
-@media print{.playbtn,#player{display:none!important}}
 </style>
 </head>
 <body>
@@ -181,7 +174,6 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
 <!-- 4b · DESAFIOS NA ILHA -->
 <div class="frame"><section class="page dark">
   <div class="ph" style="left:0;top:0;width:1600px;height:400px"><img src="img/ilha-aerea.jpg" alt="Ilha em Angra dos Reis onde aconteceu o Desafios na Ilha"></div>
-  <button type="button" class="playbtn" data-video="videos/desafios-na-ilha-2020.mp4" style="position:absolute;right:104px;top:330px">▶&nbsp;&nbsp;Assistir ao vídeo</button>
   <div style="position:absolute;left:104px;top:450px;width:660px">
     <div class="eyebrow">Desafios na Ilha · Angra dos Reis · 2020</div>
     <h2 style="margin-top:22px;font-size:52px;color:#fff">Um reality da beleza numa ilha</h2>
@@ -375,7 +367,6 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
 </section></div>
 
 </main>
-<div id="player" role="dialog" aria-label="Vídeo"><button type="button" class="close" aria-label="Fechar vídeo">Fechar ✕</button><video controls playsinline preload="none" poster="img/poster-desafios-na-ilha-2020.jpg"></video></div>
 
 <script>
 (function(){
@@ -394,17 +385,11 @@ ul.list{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:19px;
 
   // escala as páginas para caber na largura da tela
   var root=document.documentElement;
-  function fit(){var s=Math.min(1,(window.innerWidth-32)/1600);root.style.setProperty('--s',s.toFixed(4));}
+  function fit(){var w=Math.min(window.innerWidth,document.documentElement.clientWidth||window.innerWidth);var s=Math.min(1,(w-32)/1600);root.style.setProperty('--s',s.toFixed(4));}
   window.addEventListener('resize',fit);fit();
   window.addEventListener('beforeprint',function(){root.style.setProperty('--s','.8')});
   window.addEventListener('afterprint',fit);
   document.getElementById('print').onclick=function(){window.print()};
-  var player=document.getElementById('player'),pv=player.querySelector('video');
-  function closePlayer(){pv.pause();player.classList.remove('open');}
-  [].forEach.call(document.querySelectorAll('.playbtn'),function(b){b.addEventListener('click',function(){if(pv.dataset.cur!==b.dataset.video){pv.dataset.cur=b.dataset.video;pv.innerHTML='<source src="'+b.dataset.video+'" type="video/mp4"><source src="'+b.dataset.video.replace(/\.mp4$/,'.webm')+'" type="video/webm">';pv.load();}player.classList.add('open');try{var p=pv.play();if(p)p.catch(function(){})}catch(err){}});});
-  player.querySelector('.close').onclick=closePlayer;
-  player.addEventListener('click',function(e){if(e.target===player)closePlayer();});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&player.classList.contains('open'))closePlayer();});
 })();
 </script>
 </body>

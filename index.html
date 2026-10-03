@@ -83,12 +83,6 @@ body:hover #ui,#ui:focus-within{opacity:1}
   .slide,.slide.on{transition:none}
   .slide.on .a,.slide.on .fade,.slide.on .grow,.slide.on .ring,.slide.on .kb img,.slide.on .kb video{animation:none}
 }
-.playbtn{all:unset;cursor:pointer;font:400 15px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:#fff;padding:16px 24px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-.playbtn:focus-visible{outline:2px solid #fff;outline-offset:3px}
-#player{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;padding:max(16px,4vh) 16px}
-#player.open{display:flex}
-#player video{width:min(1280px,100%,calc((100vh - 8vh) * 16 / 9));aspect-ratio:16/9;height:auto;background:#000}
-#player .close{all:unset;cursor:pointer;position:absolute;top:max(14px,env(safe-area-inset-top));right:16px;color:#fff;font:400 13px/1 var(--sans);letter-spacing:.14em;background:rgba(255,255,255,.14);padding:10px 14px;border-radius:999px}
 </style>
 </head>
 <body>
@@ -140,7 +134,6 @@ body:hover #ui,#ui:focus-within{opacity:1}
 <!-- 3 · DESAFIOS NA ILHA -->
 <section class="slide dark" data-title="Desafios na Ilha">
   <div class="ph" style="left:0;top:0;width:1600px;height:400px"><video poster="img/poster-desafios-ilha.jpg" muted loop playsinline preload="metadata"><source src="videos/desafios-ilha.mp4" type="video/mp4"><source src="videos/desafios-ilha.webm" type="video/webm"></video></div>
-  <button type="button" class="playbtn a" data-video="videos/desafios-na-ilha-2020.mp4" style="--d:.8;position:absolute;right:104px;top:330px">▶&nbsp;&nbsp;Assistir ao vídeo</button>
   <div style="position:absolute;left:104px;top:450px;width:660px">
     <div class="eyebrow a" style="--d:.2">Desafios na Ilha · Angra dos Reis · 2020</div>
     <h2 class="a" style="--d:.35;margin-top:22px;font-size:52px">Um reality da beleza numa ilha</h2>
@@ -478,7 +471,6 @@ body:hover #ui,#ui:focus-within{opacity:1}
 
 </div></div>
 
-<div id="player" role="dialog" aria-label="Vídeo"><button type="button" class="close" aria-label="Fechar vídeo">Fechar ✕</button><video controls playsinline preload="none" poster="img/poster-desafios-na-ilha-2020.jpg"></video></div>
 <div id="bar"></div>
 <div id="ui">
   <button id="prev" aria-label="Slide anterior">←</button>
@@ -549,20 +541,14 @@ body:hover #ui,#ui:focus-within{opacity:1}
   document.getElementById('next').onclick=function(){go(cur+1)};
   document.getElementById('prev').onclick=function(){go(cur-1)};
   document.getElementById('fs').onclick=function(){var el=document.documentElement;try{if(document.fullscreenElement)document.exitFullscreen();else{var p=el.requestFullscreen&&el.requestFullscreen();if(p&&p.catch)p.catch(function(){})}}catch(e){}};
-  var player=document.getElementById('player'),pv=player.querySelector('video');
-  function closePlayer(){pv.pause();player.classList.remove('open');}
-  [].forEach.call(document.querySelectorAll('.playbtn'),function(b){b.addEventListener('click',function(e){e.stopPropagation();if(pv.dataset.cur!==b.dataset.video){pv.dataset.cur=b.dataset.video;pv.innerHTML='<source src="'+b.dataset.video+'" type="video/mp4"><source src="'+b.dataset.video.replace(/\.mp4$/,'.webm')+'" type="video/webm">';pv.load();}player.classList.add('open');try{var p=pv.play();if(p)p.catch(function(){})}catch(err){}});});
-  player.querySelector('.close').onclick=closePlayer;
-  player.addEventListener('click',function(e){if(e.target===player)closePlayer();});
   document.addEventListener('keydown',function(e){
-    if(player.classList.contains('open')){if(e.key==='Escape')closePlayer();return;}
     if(['ArrowRight','PageDown',' ','Enter'].indexOf(e.key)>-1){e.preventDefault();go(cur+1)}
     else if(['ArrowLeft','PageUp','Backspace'].indexOf(e.key)>-1){e.preventDefault();go(cur-1)}
     else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
     else if(e.key==='f'||e.key==='F')document.getElementById('fs').click();
   });
   document.getElementById('viewport').addEventListener('click',function(e){go(e.clientX>window.innerWidth/3?cur+1:cur-1)});
-  var x0=null;document.addEventListener('touchstart',function(e){x0=player.classList.contains('open')?null:e.touches[0].clientX},{passive:true});
+  var x0=null;document.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
   document.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)go(dx<0?cur+1:cur-1);x0=null},{passive:true});
   // vídeo ausente: mantém a foto de capa (poster) parada
   
